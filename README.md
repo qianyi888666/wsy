@@ -1,67 +1,307 @@
-# 抖音视频解析小程序
+# 短视频无水印下载小程序
 
-这是一个微信小程序，用于解析抖音视频链接并获取无水印下载地址。
+一个功能完善的微信小程序，支持抖音、快手、小红书等平台短视频无水印下载，集成广告变现功能。
 
-## 项目结构
+## 🔗 项目信息
 
+- **GitHub**: https://github.com/qianyi888666/wsy
+- **开发者**: 厉温
+- **QQ**: 919373260
+
+## ✨ 功能特性
+
+- 🎬 **多平台支持** - 支持抖音、快手、小红书等主流短视频平台
+- 🚀 **智能链接识别** - 自动从文本中提取视频链接
+- 📱 **视频预览** - 在线预览无水印视频
+- ⬇️ **一键下载** - 支持保存到相册或复制链接
+- 💰 **广告变现** - 集成激励视频广告和插屏广告
+- 🎨 **现代化UI** - 深色渐变主题，毛玻璃效果，流畅动画
+- 📱 **HarmonyOS兼容** - 自动检测并优化鸿蒙系统体验
+- 📢 **公告通知** - 支持实时公告和通知内容更新
+
+## 🛠 技术栈
+
+### 前端
+- 微信小程序原生框架
+- JavaScript (ES6+)
+- WXSS样式
+- 微信广告组件
+
+### 后端
+- PHP 7.0+
+- MySQL 5.6+
+- PDO数据库扩展
+
+##  快速开始
+
+### 前置要求
+
+- 微信开发者工具
+- 已注册的微信小程序账号
+- PHP 7.0+ 服务器环境
+- MySQL 5.6+ 数据库
+- 视频解析API服务
+
+### 1. 克隆项目
+
+```bash
+git clone [项目地址]
+cd 短视频无水印下载小程序
 ```
-去水印小工具/
-├── api.php              # 小程序API接口（新增）
-├── api_handler.php      # 抖音视频解析API处理类
-├── config.php           # API配置文件
-├── parse.php            # 视频解析请求处理
-├── index.php            # 网页版首页
-└── miniprogram/         # 微信小程序代码
-    ├── app.js           # 小程序入口
-    ├── app.json         # 小程序全局配置
-    ├── app.wxss         # 小程序全局样式
-    ├── pages/           # 页面目录
-    │   └── index/       # 首页
-    │       ├── index.js
-    │       ├── index.json
-    │       ├── index.wxml
-    │       └── index.wxss
-    ├── utils/           # 工具函数
-    │   └── api.js       # API请求封装
-    ├── images/          # 图片资源
-    ├── project.config.json  # 项目配置
-    └── sitemap.json     # 站点地图
+
+### 2. 配置小程序前端
+
+#### 修改 app.js
+
+```javascript
+globalData: {
+  userInfo: null,
+  apiBaseUrl: 'https://your-domain.com/api/', // 修改为您的后端API地址
+  isHarmonyOS: false
+}
 ```
 
-## 使用说明
+#### 修改 project.config.json
 
-### 1. 后端配置
+```json
+{
+  "appid": "your-appid",           // 修改为您的小程序AppID
+  "projectname": "您的项目名称"
+}
+```
 
-1. 将 `api.php`、`api_handler.php`、`config.php` 和 `parse.php` 上传到您的服务器
-2. 确保服务器支持PHP，并且已安装cURL扩展
-3. 修改 `miniprogram/app.js` 中的 `apiBaseUrl` 为您的实际域名
+#### 修改广告配置（pages/index/index.js）
 
-### 2. 小程序配置
+```javascript
+data: {
+  videoAdUnitId: 'adunit-xxxxxxxx',      // 激励视频广告位ID
+  interstitialAdUnitId: 'adunit-xxxxxxxx' // 插屏广告位ID
+}
+```
 
-1. 在微信开发者工具中导入 `miniprogram` 目录
-2. 在 `project.config.json` 中填入您的小程序AppID
-3. 在小程序管理后台配置服务器域名，添加您的服务器域名到request合法域名中
+### 3. 配置后端API
 
-### 3. 功能特点
+#### 修改 config.php
 
-- 支持解析抖音视频链接
-- 提取无水印视频下载地址
-- 显示视频作者、标题、封面等信息
-- 支持复制下载链接
-- 优雅的UI设计，适配不同屏幕尺寸
+```php
+// API接口地址基础URL
+define('API_BASE_URL', 'https://your-api-domain.com/api/dsp');
 
-## 注意事项
+// API密钥
+define('CLIENT_SECRET_KEY', 'your-secret-key');
 
-1. 确保您的服务器已正确配置CORS，允许小程序跨域请求
-2. 小程序中的网络请求域名需要在微信小程序后台进行配置
-3. 请遵守相关法律法规，不要用于商业用途
-4. 本项目仅供学习交流使用
+// 客户端ID
+define('CLIENT_ID', 'your-client-id');
+```
 
-## 开发者
+#### 修改数据库配置（sjkpz.php）
 
-- 后端API：使用PHP开发，调用第三方抖音解析API
-- 小程序前端：使用微信小程序原生开发框架
+```php
+$db_config = [
+    'host' => 'localhost',
+    'dbname' => 'your-database',
+    'username' => 'your-username',
+    'password' => 'your-password',
+    'charset' => 'utf8mb4'
+];
+```
 
-## 版本历史
+### 4. 数据库初始化
 
-- v1.0.0: 初始版本，实现基本的抖音视频解析功能
+创建数据库并导入以下表结构：
+
+```sql
+-- 用户表
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 通知表
+CREATE TABLE IF NOT EXISTS `notices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` text NOT NULL,
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 公告表
+CREATE TABLE IF NOT EXISTS `announcements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` text NOT NULL,
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+### 5. 导入初始数据
+
+```sql
+-- 插入默认用户
+INSERT INTO `users` (`username`, `password`) VALUES 
+('admin', '$2y$10$your-password-hash');
+
+-- 插入默认通知
+INSERT INTO `notices` (`content`) VALUES 
+('欢迎使用芊艺去水印小程序！！！');
+
+-- 插入默认公告
+INSERT INTO `announcements` (`content`) VALUES 
+('欢迎使用芊艺个人小工具，本工具提供短视频无水印下载功能！');
+```
+
+### 6. 上传文件
+
+将所有PHP文件上传到您的服务器，确保：
+
+- 服务器支持PHP 7.0+
+- 已安装MySQL数据库
+- 已配置正确的文件权限
+
+### 7. 配置微信小程序
+
+1. 登录微信小程序后台
+2. 在"开发" -> "开发设置"中配置服务器域名
+3. 将您的后端API地址添加到request合法域名
+4. 上传小程序代码并提交审核
+
+## 📝 配置说明
+
+### API地址配置
+
+小程序前端和后端都需要配置API地址：
+
+- **前端**: `miniprogram/app.js` 中的 `apiBaseUrl`
+- **后端**: `config.php` 中的 `API_BASE_URL`
+
+### 广告配置
+
+在微信小程序后台创建广告位，获取广告位ID后配置到：
+
+- `pages/index/index.js` 中的 `videoAdUnitId` 和 `interstitialAdUnitId`
+
+### 数据库配置
+
+确保数据库连接参数正确：
+
+- 主机地址
+- 数据库名称
+- 用户名和密码
+- 字符集（建议使用utf8mb4）
+
+## 🌐 部署指南
+
+### 前端部署
+
+1. 使用微信开发者工具打开项目
+2. 修改配置文件（AppID、API地址等）
+3. 点击"上传"按钮上传代码
+4. 在微信小程序后台提交审核
+5. 审核通过后发布上线
+
+### 后端部署
+
+1. 将PHP文件上传到服务器
+2. 修改配置文件（API地址、数据库等）
+3. 创建数据库并导入表结构
+4. 测试API接口是否正常工作
+5. 配置服务器安全设置
+
+### 域名配置
+
+确保以下域名已添加到微信小程序后台：
+
+- request合法域名：您的API域名
+- uploadFile合法域名：如需上传功能
+- downloadFile合法域名：如需下载功能
+
+## ⚠️ 注意事项
+
+### 安全建议
+
+1. **修改默认密码** - 修改数据库默认用户密码
+2. **API密钥保护** - 不要将API密钥提交到版本控制系统
+3. **输入验证** - 后端已实现基本的输入验证
+4. **频率限制** - 建议添加API访问频率限制
+5. **HTTPS** - 生产环境必须使用HTTPS
+
+### 性能优化
+
+1. **CDN加速** - 使用CDN加速静态资源
+2. **缓存策略** - 合理使用缓存减少API请求
+3. **图片优化** - 压缩图片资源大小
+4. **代码分包** - 大型项目可考虑代码分包
+
+### 合规要求
+
+1. **用户协议** - 添加用户协议和隐私政策
+2. **内容审核** - 确保小程序内容符合平台规范
+3. **版权声明** - 明确视频内容版权归属
+4. **广告规范** - 遵守微信广告投放规范
+
+## ❓ 常见问题
+
+### Q1: API请求失败怎么办？
+
+**A**: 检查以下几点：
+- API地址是否正确
+- API密钥是否有效
+- 网络连接是否正常
+- 服务器是否正常运行
+
+### Q2: 视频解析失败？
+
+**A**: 可能的原因：
+- 视频链接已失效
+- 视频平台接口变更
+- API服务暂时不可用
+- 会员等级不足
+
+### Q3: 广告无法加载？
+
+**A**: 检查：
+- 广告位ID是否正确
+- 是否在微信小程序后台创建广告位
+- 小程序是否已发布
+- 网络连接是否正常
+
+### Q4: 数据库连接失败？
+
+**A**: 确认：
+- 数据库连接参数是否正确
+- 数据库服务是否运行
+- 数据库用户权限是否足够
+- 防火墙是否阻止连接
+
+### Q5: 小程序无法访问API？
+
+**A**: 检查：
+- 域名是否已添加到合法域名列表
+- 域名是否备案
+- HTTPS证书是否有效
+- 服务器是否正常响应
+
+## 📞 技术支持
+
+如有问题，请通过以下方式联系：
+
+- 查看项目文档
+- 检查服务器错误日志
+- 使用浏览器开发者工具调试
+- 联系API服务商
+
+## 📄 许可证
+
+本项目仅供学习和个人使用，请勿用于商业用途。
+
+## 🙏 致谢
+
+感谢所有为本项目做出贡献的开发者。
+
+
+
+**最后更新**: 2026-02-20
+**版本**: v2.0
