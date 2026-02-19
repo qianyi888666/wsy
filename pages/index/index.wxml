@@ -1,0 +1,191 @@
+<!--pages/index/index.wxml-->
+<view class="page-container">
+  <!-- 背景装饰元素 -->
+  <view class="bg-decoration">
+    <view class="bg-circle bg-circle-1"></view>
+    <view class="bg-circle bg-circle-2"></view>
+    <view class="bg-circle bg-circle-3"></view>
+  </view>
+  
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="navbar-content">
+      <view class="navbar-title">芊艺个人小工具</view>
+    </view>
+  </view>
+  
+  <!-- 横向滚动公告栏 -->
+  <view class="announcement-bar" style="top: {{announcementBarTop}}px;">
+    <view class="announcement-wrapper">
+      <view class="announcement-icon">
+        <text class="iconfont icon-laba">📢</text>
+      </view>
+      <view class="announcement-content-wrapper">
+        <view class="announcement-content">
+          <text class="announcement-text">{{announcementContent}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 悬浮客服按钮已移动到输入区域下方 -->
+  
+  <view class="container" style="--status-bar-height: {{statusBarHeight}}px;">
+    <!-- HarmonyOS 提示 -->
+    <view class="harmonyos-tip" wx:if="{{isHarmonyOS}}">
+      <text class="harmonyos-tip-text">您正在使用 HarmonyOS 设备，已为您优化体验</text>
+    </view>
+  
+    <!-- 主标题区域 -->
+    <view class="header-section">
+      <view class="main-title">去水印小工具</view>
+      <view class="sub-title">仅支持个人非商用视频或图集素材去水印</view>
+      <view class="notice-compact">
+        <view class="notice-label">公告</view>
+        <text class="notice-compact-text">{{noticeContent}}</text>
+      </view>
+    </view>
+
+    <!-- 输入区域 -->
+    <view class="input-section">
+      <view class="input-card">
+        <view class="input-header">
+          <view class="input-icon">🔗</view>
+          <view class="input-title">去水印链接填写</view>
+        </view>
+        <view class="input-wrapper">
+          <textarea 
+            class="input-modern" 
+            placeholder="请输入视频或图集作品链接" 
+            value="{{videoUrl}}"
+            bindinput="onUrlInput"
+            auto-height
+          ></textarea>
+        </view>
+      </view>
+      
+      <view class="button-container">
+        <button 
+          class="btn-modern {{loading || adLoading || !videoUrl ? 'btn-disabled' : ''}} {{videoUrl ? 'btn-ready' : ''}}" 
+          bindtap="parseVideo"
+          loading="{{loading || adLoading}}"
+          disabled="{{loading || adLoading || !videoUrl}}"
+        >
+          <view class="btn-content">
+            <view class="btn-icon">{{loading || adLoading ? '' : '⚡'}}</view>
+            <view class="btn-text">
+              {{loading ? '去水印中，请稍后...' : (adLoading ? '广告加载中...' : '一键去水印')}}
+            </view>
+          </view>
+        </button>
+      </view>
+    </view>
+    
+    <!-- 固定客服按钮 -->
+    <button class="customer-service-btn-inline" bindtap="showCustomerServiceTip" open-type="contact">
+      <view class="service-text-wrapper">
+        <text class="service-text-top">咨询</text>
+        <text class="service-text-bottom">客服</text>
+      </view>
+    </button>
+
+    <!-- 广告加载状态 -->
+    <view class="ad-loading-section" wx:if="{{adLoading && !loading}}">
+      <view class="ad-loading-animation">
+        <view class="ad-loading-icon">📺</view>
+      </view>
+      <view class="ad-loading-text">正在加载广告，请稍候...</view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading-section" wx:if="{{loading}}">
+      <view class="loading-animation">
+        <view class="loading-ring"></view>
+        <view class="loading-ring"></view>
+        <view class="loading-ring"></view>
+      </view>
+      <view class="loading-text">正在去水印中，请稍候...</view>
+    </view>
+
+    <!-- 错误提示 -->
+    <view class="error-section" wx:if="{{error}}">
+      <view class="error-card">
+        <view class="error-icon">⚠️</view>
+        <view class="error-message">{{error}}</view>
+      </view>
+    </view>
+
+    <!-- 解析结果 -->
+    <view class="result-section" wx:if="{{videoData && !loading}}">
+      <view class="result-header">
+        <view class="result-title">解析结果</view>
+      </view>
+      
+      <view class="video-card">
+        <view class="video-preview" catchtap="toggleVideoPreview">
+          <image class="video-cover-modern {{showVideoPreview ? 'hide' : ''}}" src="{{videoData.cover}}" mode="aspectFit"></image>
+          <video 
+            class="video-player {{showVideoPreview ? '' : 'hide'}}" 
+            src="{{videoData.url}}" 
+            id="previewVideo"
+            controls="{{false}}"
+            show-center-play-btn="{{false}}"
+            show-fullscreen-btn="{{false}}"
+            poster="{{videoData.cover}}"
+            autoplay="{{false}}"
+            object-fit="contain"
+            bindplay="onVideoPlay"
+            bindpause="onVideoPause"
+            bindended="onVideoEnded"
+            binderror="onVideoError"
+            enable-play-gesture="{{false}}"
+          ></video>
+          <view class="video-overlay {{showVideoPreview ? 'hide' : ''}}">
+            <view class="play-icon">▶</view>
+            <view class="preview-tip">点击预览视频</view>
+          </view>
+          <view class="refresh-video {{showVideoPreview ? '' : 'hide'}}" bindtap="refreshVideo" catchtap="true">
+            <view class="refresh-icon">↻</view>
+            <view class="refresh-text">刷新</view>
+          </view>
+        </view>
+        
+        <view class="video-info">
+          <view class="video-actions-modern">
+            <view class="action-btn primary-action" bindtap="downloadVideo">
+              <view class="action-icon">⬇</view>
+              <view class="action-text">下载视频</view>
+            </view>
+            <view class="action-btn secondary-action" bindtap="copyLink">
+              <view class="action-icon">📋</view>
+              <view class="action-text">复制链接</view>
+            </view>
+          </view>
+          
+          <view class="link-toggle-modern" bindtap="toggleLinkDisplay">
+            <view class="toggle-text">{{showLink ? '隐藏链接' : '查看链接'}}</view>
+            <view class="toggle-icon">{{showLink ? '▲' : '▼'}}</view>
+          </view>
+          
+          <view class="link-panel" wx:if="{{showLink}}">
+            <view class="link-header">
+              <view class="link-title">无水印视频链接</view>
+              <view class="copy-btn" bindtap="copyLink">一键复制</view>
+            </view>
+            <view class="link-content">
+              <text class="link-code" user-select>{{videoData.url}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 技术支持声明 - 固定在底部 -->
+  <view class="tech-support-fixed">
+    <view class="tech-support-content">
+      <view class="tech-support-line">视频或图集素材归平台作者所有</view>
+      <view class="tech-support-line">本小程序不储存任何视频及图片</view>
+    </view>
+  </view>
+</view>
