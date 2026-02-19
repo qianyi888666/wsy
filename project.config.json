@@ -52,7 +52,7 @@
   "compileType": "miniprogram",
   "libVersion": "3.12.1",
   "appid": "wxc272eca235cd46e6",
-  "projectname": "芊艺去水印小工具",
+  "projectname": "短视频无水印下载",
   "isGameTourist": false,
   "condition": {
     "search": {

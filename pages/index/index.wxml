@@ -10,7 +10,7 @@
   <!-- 自定义导航栏 -->
   <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
     <view class="navbar-content">
-      <view class="navbar-title">芊艺个人小工具</view>
+      <view class="navbar-title">短视频无水印下载</view>
     </view>
   </view>
   

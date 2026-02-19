@@ -56,7 +56,7 @@ cd 短视频无水印下载小程序
 ```javascript
 globalData: {
   userInfo: null,
-  apiBaseUrl: 'https://your-domain.com/api/', // 修改为您的后端API地址
+  apiBaseUrl: 'https://xxxx.com/', // 修改为您的后端API地址
   isHarmonyOS: false
 }
 ```
@@ -79,81 +79,7 @@ data: {
 }
 ```
 
-### 3. 配置后端API
-
-#### 修改 config.php
-
-```php
-// API接口地址基础URL
-define('API_BASE_URL', 'https://your-api-domain.com/api/dsp');
-
-// API密钥
-define('CLIENT_SECRET_KEY', 'your-secret-key');
-
-// 客户端ID
-define('CLIENT_ID', 'your-client-id');
-```
-
-#### 修改数据库配置（sjkpz.php）
-
-```php
-$db_config = [
-    'host' => 'localhost',
-    'dbname' => 'your-database',
-    'username' => 'your-username',
-    'password' => 'your-password',
-    'charset' => 'utf8mb4'
-];
-```
-
-### 4. 数据库初始化
-
-创建数据库并导入以下表结构：
-
-```sql
--- 用户表
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- 通知表
-CREATE TABLE IF NOT EXISTS `notices` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` text NOT NULL,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- 公告表
-CREATE TABLE IF NOT EXISTS `announcements` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` text NOT NULL,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-```
-
-### 5. 导入初始数据
-
-```sql
--- 插入默认用户
-INSERT INTO `users` (`username`, `password`) VALUES 
-('admin', '$2y$10$your-password-hash');
-
--- 插入默认通知
-INSERT INTO `notices` (`content`) VALUES 
-('欢迎使用芊艺去水印小程序！！！');
-
--- 插入默认公告
-INSERT INTO `announcements` (`content`) VALUES 
-('欢迎使用芊艺个人小工具，本工具提供短视频无水印下载功能！');
-```
-
-### 6. 上传文件
+### 3. 上传文件
 
 将所有PHP文件上传到您的服务器，确保：
 
@@ -161,7 +87,7 @@ INSERT INTO `announcements` (`content`) VALUES
 - 已安装MySQL数据库
 - 已配置正确的文件权限
 
-### 7. 配置微信小程序
+### 4. 配置微信小程序
 
 1. 登录微信小程序后台
 2. 在"开发" -> "开发设置"中配置服务器域名

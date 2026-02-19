@@ -23,7 +23,7 @@ App({
   
   globalData: {
     userInfo: null,
-    apiBaseUrl: 'https://dy.qyhlq.top/douyin/', // API基础地址，更新为douyin目录
+    apiBaseUrl: 'https://xxxx.com/', // API基础地址，请修改为实际地址
     isHarmonyOS: false // 是否为 HarmonyOS 平台
   }
 })

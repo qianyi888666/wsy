@@ -11,8 +11,8 @@ Page({
     showLink: false,
     showVideoPreview: false,
     isHarmonyOS: false,
-    noticeContent: '欢迎使用芊艺去水印小程序！！！',
-    announcementContent: '欢迎使用芊艺个人小工具，本工具提供短视频无水印下载功能！',
+    noticeContent: '欢迎使用短视频无水印下载小程序！！！',
+    announcementContent: '欢迎使用短视频无水印下载，本工具提供短视频无水印下载功能！',
     announcementBarTop: 0, // 公告栏距离顶部的距离
     updateTimer: null, // 定时器ID
     adLoading: false, // 广告加载状态
