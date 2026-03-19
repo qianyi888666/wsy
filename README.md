@@ -7,7 +7,7 @@
 ## 🔗 项目信息
 
 - **GitHub**: https://github.com/qianyi888666/wsy
-- **开发者**: 厉温
+- **开发者**: Soren·Nir
 - **QQ**: 919373260
 
 ---
