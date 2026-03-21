@@ -4,8 +4,10 @@
   ],
   "window": {
     "backgroundTextStyle": "dark",
-    "navigationStyle": "custom",
-    "backgroundColor": "#1a1d29"
+    "navigationBarTitleText": "短视频无水印下载",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F0F2F5"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",

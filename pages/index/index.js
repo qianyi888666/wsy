@@ -14,45 +14,16 @@ Page({
     noticeContent: '欢迎使用短视频无水印下载小程序！！！',
     announcementContent: '欢迎使用短视频无水印下载，本工具提供短视频无水印下载功能！',
     announcementBarTop: 0, // 公告栏距离顶部的距离
-    updateTimer: null, // 定时器ID
-    adLoading: false, // 广告加载状态
-    videoAdUnitId: '', // 激励视频广告位ID，需要替换为实际的广告位ID
-    rewardAd: null, // 激励视频广告实例
-    interstitialAdUnitId: '', // 插屏广告位ID，需要替换为实际的广告位ID
-    interstitialAd: null, // 插屏广告实例
-    interstitialAdTimer: null // 插屏广告定时器
+    updateTimer: null // 定时器ID
   },
 
   onLoad: function (options) {
-    // 立即设置页面样式，避免闪烁
-    wx.setNavigationBarColor({
-      frontColor: '#ffffff',
-      backgroundColor: '#1a1d29'
-    })
-    
     // 延迟初始化，确保组件框架完全加载
     setTimeout(() => {
-      // 获取窗口信息，包括状态栏高度
-      const windowInfo = wx.getWindowInfo()
-      // 只更新需要的数据，避免不必要的渲染
-      if (windowInfo.statusBarHeight !== this.data.statusBarHeight) {
-        this.setData({
-          statusBarHeight: windowInfo.statusBarHeight
-        })
-      }
-      
       // 获取平台信息
       const app = getApp()
       this.setData({
         isHarmonyOS: app.globalData.isHarmonyOS
-      })
-      
-      // 计算导航栏总高度（状态栏高度 + 导航栏内容高度）
-      const navbarTotalHeight = windowInfo.statusBarHeight + 44
-      
-      // 设置公告栏的位置，确保紧贴导航栏
-      this.setData({
-        announcementBarTop: navbarTotalHeight
       })
       
       // 获取通知和公告内容
@@ -64,12 +35,6 @@ Page({
         this.getNoticeContent()
         this.getAnnouncementContent()
       }, 5000)
-      
-      // 初始化激励视频广告
-      this.initRewardAd()
-      
-      // 初始化插屏广告
-      this.initInterstitialAd()
     }, 100)
   },
 
@@ -157,197 +122,7 @@ Page({
     return normalizedData
   },
 
-  // 初始化激励视频广告
-  initRewardAd: function() {
-    if (!wx.createRewardedVideoAd) {
-      console.error('当前微信版本不支持激励视频广告')
-      return
-    }
-    
-    try {
-      // 销毁旧的广告实例（如果存在）
-      if (this.data.rewardAd) {
-        try {
-          this.data.rewardAd.offLoad && this.data.rewardAd.offLoad()
-          this.data.rewardAd.offError && this.data.rewardAd.offError()
-          this.data.rewardAd.offClose && this.data.rewardAd.offClose()
-        } catch (e) {
-          console.error('销毁旧广告实例时出错:', e)
-        }
-      }
-      
-      // 创建激励视频广告实例
-      const rewardAd = wx.createRewardedVideoAd({
-        adUnitId: this.data.videoAdUnitId,
-        multiton: false // 确保每次都是新的广告实例
-      })
-      
-      this.setData({
-        rewardAd: rewardAd
-      })
-      
-      // 监听广告加载事件
-      rewardAd.onLoad(() => {
-        console.log('激励视频广告加载成功')
-      })
-      
-      // 监听广告错误事件
-      rewardAd.onError((err) => {
-        console.error('激励视频广告加载失败:', err)
-        this.setData({
-          adLoading: false
-        })
-      })
-      
-      // 监听广告关闭事件
-      rewardAd.onClose((status) => {
-        this.setData({
-          adLoading: false
-        })
-        
-        if (status && status.isEnded || status === undefined) {
-          // 用户看完广告，可以发放奖励
-          this.doParseVideo()
-        } else {
-          // 用户没看完广告，不发放奖励
-          wx.showToast({
-            title: '需要完整观看广告才能使用去水印功能',
-            icon: 'none',
-            duration: 2000
-          })
-        }
-      })
-      
-      // 延迟预加载广告，确保广告实例完全初始化
-      setTimeout(() => {
-        if (this.data && this.data.rewardAd === rewardAd) {
-          rewardAd.load().catch(err => {
-            console.log('预加载广告失败，将在使用时重新加载:', err)
-          })
-        }
-      }, 500)
-      
-    } catch (err) {
-      console.error('创建激励视频广告实例失败:', err)
-      this.setData({
-        adLoading: false
-      })
-    }
-  },
-  
-  // 显示激励视频广告
-  showRewardAd: function() {
-    // 检查页面是否还在显示中
-    if (!this.data || !this.data.videoUrl) {
-      return
-    }
-    
-    if (!this.data.rewardAd) {
-      // 如果广告实例不存在，尝试重新创建
-      this.initRewardAd()
-      
-      if (!this.data.rewardAd) {
-        wx.showToast({
-          title: '广告初始化失败',
-          icon: 'none'
-        })
-        return
-      }
-    }
-    
-    this.setData({
-      adLoading: true
-    })
-    
-    // 延迟一小段时间，确保页面渲染完成
-    setTimeout(() => {
-      // 再次检查页面状态
-      if (!this.data || !this.data.videoUrl) {
-        this.setData({
-          adLoading: false
-        })
-        return
-      }
-      
-      // 尝试加载并显示广告
-      this.loadAndShowAd(0)
-    }, 300)
-  },
-  
-  // 加载并显示广告，支持重试
-  loadAndShowAd: function(retryCount) {
-    const maxRetries = 2 // 最大重试次数
-    
-    // 再次检查页面和广告实例状态
-    if (!this.data || !this.data.rewardAd || !this.data.videoUrl) {
-      this.setData({
-        adLoading: false
-      })
-      return
-    }
-    
-    // 先加载广告数据
-    this.data.rewardAd.load()
-      .then(() => {
-        // 再次检查页面状态
-        if (!this.data || !this.data.rewardAd || !this.data.videoUrl) {
-          this.setData({
-            adLoading: false
-          })
-          return
-        }
-        
-        // 加载成功后显示广告
-        return this.data.rewardAd.show()
-      })
-      .catch((err) => {
-        console.error(`激励视频广告加载或显示失败 (尝试 ${retryCount + 1}/${maxRetries + 1}):`, err)
-        
-        // 如果还有重试机会，则重试
-        if (retryCount < maxRetries) {
-          // 延迟一段时间后重试
-          setTimeout(() => {
-            // 再次检查页面状态
-            if (!this.data || !this.data.videoUrl) {
-              this.setData({
-                adLoading: false
-              })
-              return
-            }
-            
-            // 重新创建广告实例
-            this.initRewardAd()
-            
-            // 再次延迟后重试
-            setTimeout(() => {
-              this.loadAndShowAd(retryCount + 1)
-            }, 500)
-          }, 1000)
-        } else {
-          // 重试次数用完，显示降级选项
-          this.setData({
-            adLoading: false
-          })
-          
-          wx.showModal({
-            title: '提示',
-            content: '广告暂时无法加载，是否直接使用去水印功能？',
-            confirmText: '直接使用',
-            cancelText: '重试',
-            success: (res) => {
-              if (res.confirm) {
-                this.doParseVideo()
-              } else {
-                // 用户选择重试
-                this.showRewardAd()
-              }
-            }
-          })
-        }
-      })
-  },
-  
-  // 解析视频（不含广告逻辑）
+  // 解析视频
   doParseVideo: function() {
     let videoUrl = this.data.videoUrl.trim()
     if (!videoUrl) {
@@ -378,11 +153,6 @@ Page({
           videoData,
           showVideoPreview: false // 重置视频预览状态
         })
-        
-        // 设置定时器，0.5秒后显示插屏广告
-        this.data.interstitialAdTimer = setTimeout(() => {
-          this.showInterstitialAd()
-        }, 500)
       })
       .catch(err => {
         let errorMessage = '解析失败，请检查链接是否正确或稍后重试'
@@ -420,7 +190,7 @@ Page({
       })
   },
 
-  // 解析视频（含广告逻辑）
+  // 解析视频
   parseVideo: function() {
     // 检查输入是否为空
     let videoUrl = this.data.videoUrl.trim()
@@ -445,8 +215,8 @@ Page({
       showVideoPreview: false
     })
 
-    // 显示激励视频广告
-    this.showRewardAd()
+    // 直接解析视频
+    this.doParseVideo()
   },
 
   // 下载视频
@@ -793,15 +563,6 @@ Page({
       clearInterval(this.data.updateTimer)
     }
     
-    // 清除插屏广告定时器
-    if (this.data.interstitialAdTimer) {
-      clearTimeout(this.data.interstitialAdTimer)
-      this.data.interstitialAdTimer = null
-    }
-    
-    // 销毁激励视频广告实例
-    this.destroyAd()
-    
     // 清理视频上下文
     if (this.videoContext) {
       this.videoContext = null
@@ -810,18 +571,6 @@ Page({
   
   // 页面隐藏时调用
   onHide: function() {
-    // 页面隐藏时，停止广告加载
-    if (this.data.adLoading) {
-      this.setData({
-        adLoading: false
-      })
-    }
-    
-    // 清除插屏广告定时器
-    if (this.data.interstitialAdTimer) {
-      clearTimeout(this.data.interstitialAdTimer)
-      this.data.interstitialAdTimer = null
-    }
   },
   
   // 页面显示时调用
@@ -831,206 +580,6 @@ Page({
       frontColor: '#ffffff',
       backgroundColor: '#1a1d29'
     })
-    
-    // 页面显示时，可以重新初始化广告
-    if (!this.data.rewardAd) {
-      this.initRewardAd()
-    }
-  },
-  
-  // 初始化插屏广告
-  initInterstitialAd: function() {
-    console.log('开始初始化插屏广告，广告位ID:', this.data.interstitialAdUnitId)
-    
-    if (!wx.createInterstitialAd) {
-      console.error('当前微信版本不支持插屏广告')
-      return
-    }
-    
-    try {
-      // 销毁旧的插屏广告实例（如果存在）
-      if (this.data.interstitialAd) {
-        try {
-          this.data.interstitialAd.offLoad && this.data.interstitialAd.offLoad()
-          this.data.interstitialAd.offError && this.data.interstitialAd.offError()
-          this.data.interstitialAd.offClose && this.data.interstitialAd.offClose()
-        } catch (e) {
-          console.error('销毁旧插屏广告实例时出错:', e)
-        }
-      }
-      
-      // 创建插屏广告实例
-      const interstitialAd = wx.createInterstitialAd({
-        adUnitId: this.data.interstitialAdUnitId
-      })
-      
-      this.setData({
-        interstitialAd: interstitialAd
-      })
-      
-      console.log('插屏广告实例创建成功')
-      
-      // 监听插屏广告加载事件
-      interstitialAd.onLoad(() => {
-        console.log('插屏广告预加载成功')
-      })
-      
-      // 监听插屏广告错误事件
-      interstitialAd.onError((err) => {
-        console.error('插屏广告加载失败:', err)
-        // 检查是否是广告位ID错误
-        if (err.errMsg && err.errMsg.includes('ad unit not exist')) {
-          console.error('错误：广告位ID不存在，请检查广告位ID是否正确')
-        }
-      })
-      
-      // 监听插屏广告关闭事件
-      interstitialAd.onClose(() => {
-        console.log('插屏广告已关闭')
-      })
-      
-      // 延迟预加载插屏广告，确保广告实例完全初始化
-      setTimeout(() => {
-        if (this.data && this.data.interstitialAd === interstitialAd) {
-          console.log('开始预加载插屏广告')
-          interstitialAd.load().then(() => {
-            console.log('插屏广告预加载完成')
-          }).catch(err => {
-            console.log('预加载插屏广告失败，将在使用时重新加载:', err)
-          })
-        }
-      }, 500)
-      
-    } catch (err) {
-      console.error('创建插屏广告实例失败:', err)
-    }
-  },
-  
-  // 显示插屏广告
-  showInterstitialAd: function() {
-    console.log('准备显示插屏广告')
-    
-    // 检查页面是否还在显示中
-    if (!this.data || !this.data.videoData) {
-      console.log('页面或视频数据不存在，不显示插屏广告')
-      return
-    }
-    
-    if (!this.data.interstitialAd) {
-      console.log('插屏广告实例不存在，尝试重新创建')
-      // 如果广告实例不存在，尝试重新创建
-      this.initInterstitialAd()
-      
-      if (!this.data.interstitialAd) {
-        console.error('插屏广告初始化失败')
-        return
-      }
-    }
-    
-    console.log('开始加载插屏广告')
-    
-    // 加载并显示插屏广告
-    this.data.interstitialAd.load()
-      .then(() => {
-        console.log('插屏广告加载成功，准备显示')
-        
-        // 再次检查页面状态
-        if (!this.data || !this.data.videoData) {
-          console.log('页面或视频数据不存在，不显示插屏广告')
-          return
-        }
-        
-        // 显示插屏广告
-        this.data.interstitialAd.show()
-          .then(() => {
-            console.log('插屏广告显示成功')
-          })
-          .catch((err) => {
-            console.error('插屏广告显示失败:', err)
-            
-            // 尝试使用降级方案
-            this.showFallbackAd()
-          })
-      })
-      .catch((err) => {
-        console.error('插屏广告加载失败:', err)
-        
-        // 尝试使用降级方案
-        this.showFallbackAd()
-      })
-  },
-  
-  // 降级广告方案
-  showFallbackAd: function() {
-    console.log('尝试使用降级广告方案')
-    
-    // 尝试重新创建广告实例并显示
-    try {
-      // 销毁旧实例
-      if (this.data.interstitialAd) {
-        this.data.interstitialAd.offLoad && this.data.interstitialAd.offLoad()
-        this.data.interstitialAd.offError && this.data.interstitialAd.offError()
-        this.data.interstitialAd.offClose && this.data.interstitialAd.offClose()
-      }
-      
-      // 创建新实例
-      const interstitialAd = wx.createInterstitialAd({
-        adUnitId: this.data.interstitialAdUnitId
-      })
-      
-      this.setData({
-        interstitialAd: interstitialAd
-      })
-      
-      // 设置事件监听
-      interstitialAd.onLoad(() => {
-        console.log('降级方案：插屏广告加载成功')
-        interstitialAd.show().catch(err => {
-          console.error('降级方案：插屏广告显示失败', err)
-        })
-      })
-      
-      interstitialAd.onError((err) => {
-        console.error('降级方案：插屏广告加载失败', err)
-      })
-      
-      interstitialAd.onClose(() => {
-        console.log('降级方案：插屏广告已关闭')
-      })
-      
-      // 尝试加载
-      interstitialAd.load()
-      
-    } catch (err) {
-      console.error('降级广告方案也失败了', err)
-    }
-  },
-  
-  // 销毁广告实例的通用方法
-  destroyAd: function() {
-    // 销毁激励视频广告实例
-    if (this.data.rewardAd) {
-      try {
-        this.data.rewardAd.offLoad && this.data.rewardAd.offLoad()
-        this.data.rewardAd.offError && this.data.rewardAd.offError()
-        this.data.rewardAd.offClose && this.data.rewardAd.offClose()
-      } catch (e) {
-        console.error('销毁激励视频广告实例时出错:', e)
-      }
-      this.data.rewardAd = null
-    }
-    
-    // 销毁插屏广告实例
-    if (this.data.interstitialAd) {
-      try {
-        this.data.interstitialAd.offLoad && this.data.interstitialAd.offLoad()
-        this.data.interstitialAd.offError && this.data.interstitialAd.offError()
-        this.data.interstitialAd.offClose && this.data.interstitialAd.offClose()
-      } catch (e) {
-        console.error('销毁插屏广告实例时出错:', e)
-      }
-      this.data.interstitialAd = null
-    }
   },
 
   // 分享给好友

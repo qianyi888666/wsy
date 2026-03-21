@@ -1,25 +1,8 @@
 <!--pages/index/index.wxml-->
 <view class="page-container">
-  <!-- 背景装饰元素 -->
-  <view class="bg-decoration">
-    <view class="bg-circle bg-circle-1"></view>
-    <view class="bg-circle bg-circle-2"></view>
-    <view class="bg-circle bg-circle-3"></view>
-  </view>
-  
-  <!-- 自定义导航栏 -->
-  <view class="custom-navbar" style="padding-top: {{statusBarHeight}}px;">
-    <view class="navbar-content">
-      <view class="navbar-title">短视频无水印下载</view>
-    </view>
-  </view>
-  
   <!-- 横向滚动公告栏 -->
-  <view class="announcement-bar" style="top: {{announcementBarTop}}px;">
+  <view class="announcement-bar">
     <view class="announcement-wrapper">
-      <view class="announcement-icon">
-        <text class="iconfont icon-laba">📢</text>
-      </view>
       <view class="announcement-content-wrapper">
         <view class="announcement-content">
           <text class="announcement-text">{{announcementContent}}</text>
@@ -50,7 +33,6 @@
     <view class="input-section">
       <view class="input-card">
         <view class="input-header">
-          <view class="input-icon">🔗</view>
           <view class="input-title">去水印链接填写</view>
         </view>
         <view class="input-wrapper">
@@ -72,7 +54,6 @@
           disabled="{{loading || adLoading || !videoUrl}}"
         >
           <view class="btn-content">
-            <view class="btn-icon">{{loading || adLoading ? '' : '⚡'}}</view>
             <view class="btn-text">
               {{loading ? '去水印中，请稍后...' : (adLoading ? '广告加载中...' : '一键去水印')}}
             </view>
@@ -81,13 +62,16 @@
       </view>
     </view>
     
-    <!-- 固定客服按钮 -->
-    <button class="customer-service-btn-inline" bindtap="showCustomerServiceTip" open-type="contact">
-      <view class="service-text-wrapper">
-        <text class="service-text-top">咨询</text>
-        <text class="service-text-bottom">客服</text>
-      </view>
-    </button>
+    <!-- 悬浮客服按钮 -->
+    <view class="customer-service-wrapper">
+      <view class="customer-service-ripple"></view>
+      <button class="customer-service-float" bindtap="showCustomerServiceTip" open-type="contact">
+        <view class="service-text-wrapper">
+          <text class="service-text-line">咨询</text>
+          <text class="service-text-line">客服</text>
+        </view>
+      </button>
+    </view>
 
     <!-- 广告加载状态 -->
     <view class="ad-loading-section" wx:if="{{adLoading && !loading}}">
@@ -153,11 +137,9 @@
         <view class="video-info">
           <view class="video-actions-modern">
             <view class="action-btn primary-action" bindtap="downloadVideo">
-              <view class="action-icon">⬇</view>
               <view class="action-text">下载视频</view>
             </view>
             <view class="action-btn secondary-action" bindtap="copyLink">
-              <view class="action-icon">📋</view>
               <view class="action-text">复制链接</view>
             </view>
           </view>
