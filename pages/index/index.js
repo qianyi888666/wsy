@@ -90,8 +90,8 @@ Page({
 
   // 标准化视频数据结构
   normalizeVideoData: function(data, platform) {
-    // 基础字段 - 适配新的API返回结构
-    let videoUrl = data.video || data.url || data.video_url || ''
+    // 基础字段 - 适配新的API返回结构，优先使用 video_url
+    let videoUrl = data.video_url || data.video || data.url || ''
     let cover = data.cover || data.cover_url || ''
     let title = data.title || ''
     let images = data.images || []
