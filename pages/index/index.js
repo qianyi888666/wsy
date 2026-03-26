@@ -240,7 +240,6 @@ Page({
     if (typeof downloadUrl === 'string' && downloadUrl.length > 0) {
       // 验证通过
     } else {
-      wx.hideLoading()
       wx.showToast({
         title: '视频链接格式错误',
         icon: 'none'
@@ -248,8 +247,16 @@ Page({
       return
     }
     
+    // 开始下载，带重试机制
+    this.downloadWithRetry(downloadUrl, 0)
+  },
+
+  // 带重试机制的下载
+  downloadWithRetry: function(downloadUrl, retryCount) {
+    const maxRetries = 2 // 最多重试2次（总共尝试3次）
+    
     wx.showLoading({
-      title: '准备下载...',
+      title: retryCount === 0 ? '准备下载...' : `重新下载中 (${retryCount}/${maxRetries})...`,
     })
     
     // 下载文件
@@ -261,11 +268,6 @@ Page({
         if (res.statusCode === 200) {
           // 下载成功，保存到本地
           const tempFilePath = res.tempFilePath
-          
-          // 获取视频标题作为文件名
-          const title = '短视频' // 使用固定标题，因为不再显示视频标题
-          // 清理文件名中的特殊字符
-          const fileName = title.replace(/[^\w\u4e00-\u9fa5]/g, '_').substring(0, 20) + '.mp4'
           
           // 保存视频到相册
           wx.saveVideoToPhotosAlbum({
@@ -293,56 +295,92 @@ Page({
                   }
                 })
               } else {
-                // 如果保存到相册失败，尝试打开文件
-                wx.openDocument({
-                  filePath: tempFilePath,
-                  success: () => {
-                    wx.showToast({
-                      title: '已打开文件',
-                      icon: 'success'
-                    })
-                  },
-                  fail: () => {
-                    wx.showModal({
-                      title: '下载失败',
-                      content: '无法保存视频到相册，也无法打开文件',
-                      showCancel: false
-                    })
+                // 保存失败，提示用户复制链接到浏览器下载
+                wx.showModal({
+                  title: '保存失败',
+                  content: '无法保存视频到相册，是否复制链接到浏览器中下载？',
+                  confirmText: '复制链接',
+                  cancelText: '取消',
+                  success: (res) => {
+                    if (res.confirm) {
+                      wx.setClipboardData({
+                        data: downloadUrl,
+                        success: () => {
+                          wx.showToast({
+                            title: '链接已复制',
+                            icon: 'success'
+                          })
+                        }
+                      })
+                    }
                   }
                 })
               }
             }
           })
         } else {
-          wx.showToast({
-            title: '下载失败',
-            icon: 'none'
-          })
+          // HTTP状态码不是200，尝试重试
+          if (retryCount < maxRetries) {
+            console.log(`下载失败，状态码：${res.statusCode}，正在重试...`)
+            setTimeout(() => {
+              this.downloadWithRetry(downloadUrl, retryCount + 1)
+            }, 1000) // 延迟1秒后重试
+          } else {
+            wx.showModal({
+              title: '下载失败',
+              content: '视频下载失败，是否复制链接到浏览器中下载？',
+              confirmText: '复制链接',
+              cancelText: '取消',
+              success: (res) => {
+                if (res.confirm) {
+                  wx.setClipboardData({
+                    data: downloadUrl,
+                    success: () => {
+                      wx.showToast({
+                        title: '链接已复制',
+                        icon: 'success'
+                      })
+                    }
+                  })
+                }
+              }
+            })
+          }
         }
       },
       fail: (err) => {
         wx.hideLoading()
         
-        wx.showModal({
-          title: '下载失败',
-          content: '视频下载失败，可复制链接到手机浏览器里粘贴连接下载！！！',
-          confirmText: '复制链接',
-          cancelText: '取消',
-          success: (res) => {
-            if (res.confirm) {
-              // 如果下载失败，提供复制链接的备选方案
-              wx.setClipboardData({
-                data: downloadUrl,
-                success: () => {
-                  wx.showToast({
-                    title: '链接已复制',
-                    icon: 'success'
-                  })
-                }
-              })
+        console.log('下载失败，错误信息：', err)
+        
+        // 下载失败，尝试重试
+        if (retryCount < maxRetries) {
+          console.log(`下载失败，正在重试...`)
+          setTimeout(() => {
+            this.downloadWithRetry(downloadUrl, retryCount + 1)
+          }, 1000) // 延迟1秒后重试
+        } else {
+          // 重试次数用尽，提示用户复制链接
+          wx.showModal({
+            title: '下载失败',
+            content: '视频下载失败，是否复制链接到浏览器中下载？',
+            confirmText: '复制链接',
+            cancelText: '取消',
+            success: (res) => {
+              if (res.confirm) {
+                wx.setClipboardData({
+                  data: downloadUrl,
+                  success: () => {
+                    wx.showToast({
+                      title: '链接已复制',
+                      icon: 'success'
+                    })
+                  }
+                })
+              }
             }
-          }
-        })
+          })
+        }
       }
     })
   },
@@ -578,7 +616,7 @@ Page({
     // 确保导航栏颜色正确，避免旧样式显示
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
-      backgroundColor: '#1a1d29'
+      backgroundColor: '#FF6B35'
     })
   },
 

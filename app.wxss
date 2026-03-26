@@ -1,20 +1,26 @@
-/* 全局样式 - 扁平化现代风格 */
+/* 全局样式 - 渐变炫彩风格 */
 
 /* ==================== CSS变量定义 ==================== */
 
-/* 色彩系统 */
+/* 色彩系统 - 暖色系渐变炫彩 */
 page {
-  --color-primary: #3B82F6;
-  --color-success: #10B981;
-  --color-error: #EF4444;
+  --color-primary: #FF6B35;
+  --color-primary-light: #FF8C42;
+  --color-primary-dark: #E55A2B;
+  --color-secondary: #FF6B6B;
+  --color-accent: #FFD93D;
+  --color-success: #2ECC71;
+  --color-error: #E74C3C;
   --color-white: #FFFFFF;
-  --color-bg: #FAF9F6;
-  --color-bg-secondary: #F5F5F0;
-  --color-text-primary: #111827;
-  --color-text-secondary: #374151;
-  --color-text-tertiary: #6B7280;
-  --color-text-placeholder: #9CA3AF;
-  --color-border: #D1D5DB;
+  --color-bg: linear-gradient(135deg, #FFF5EB 0%, #FFE8CC 50%, #FFF9E6 100%);
+  --color-bg-secondary: linear-gradient(180deg, #FFFFFF 0%, #FFF9E6 100%);
+  --color-bg-card: linear-gradient(180deg, #FFFFFF 0%, #FFFBF0 100%);
+  --color-text-primary: #2D3436;
+  --color-text-secondary: #636E72;
+  --color-text-tertiary: #B2BEC3;
+  --color-text-placeholder: #DFE6E9;
+  --color-border: #FFE4D6;
+  --color-border-strong: #FFD4B8;
 }
 
 /* 间距系统 */
@@ -34,10 +40,12 @@ page {
   --radius-lg: 16rpx;
 }
 
-/* 阴影系统 */
+/* 阴影系统 - 渐变炫彩风格 */
 page {
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-sm: 0 2px 8px rgba(255, 107, 53, 0.08);
+  --shadow-md: 0 4px 16px rgba(255, 107, 53, 0.12);
+  --shadow-lg: 0 8px 32px rgba(255, 107, 53, 0.16);
+  --shadow-glow: 0 0 20px rgba(255, 107, 53, 0.3);
 }
 
 /* ==================== 页面基础样式 ==================== */
@@ -63,9 +71,9 @@ page {
   overflow: hidden;
 }
 
-/* 主按钮 */
+/* 主按钮 - 渐变炫彩风格 */
 .btn-primary {
-  background: var(--color-primary);
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
   color: var(--color-white);
   border: none;
   border-radius: var(--radius-md);
@@ -74,8 +82,8 @@ page {
   font-weight: 600;
   text-align: center;
   margin-top: var(--spacing-md);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   height: 88rpx;
@@ -84,16 +92,32 @@ page {
   justify-content: center;
 }
 
-.btn-primary:active {
-  transform: scale(0.98);
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
 }
 
-/* 次按钮 */
+.btn-primary:active::before {
+  left: 100%;
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 次按钮 - 渐变炫彩风格 */
 .btn-secondary {
-  background: var(--color-white);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF9E6 100%);
   color: var(--color-primary);
   font-weight: 600;
-  border: 1px solid var(--color-primary);
+  border: 2px solid var(--color-primary);
   border-radius: var(--radius-md);
   padding: 0 var(--spacing-lg);
   font-size: 32rpx;
@@ -101,7 +125,7 @@ page {
   text-align: center;
   margin-top: var(--spacing-md);
   box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
   height: 88rpx;
   display: flex;
   align-items: center;
@@ -109,13 +133,13 @@ page {
 }
 
 .btn-secondary:active {
-  transform: scale(0.98);
-  background: var(--color-bg);
+  transform: scale(0.96);
+  background: linear-gradient(180deg, #FFF5EB 0%, #FFE8CC 100%);
 }
 
-/* 成功按钮 */
+/* 成功按钮 - 渐变炫彩风格 */
 .btn-success {
-  background: var(--color-primary);
+  background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%);
   color: var(--color-white);
   border: none;
   border-radius: var(--radius-md);
@@ -124,8 +148,8 @@ page {
   font-weight: 500;
   text-align: center;
   margin-top: var(--spacing-md);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   height: 88rpx;
@@ -135,12 +159,13 @@ page {
 }
 
 .btn-success:active {
-  transform: scale(0.98);
+  transform: scale(0.96);
+  box-shadow: var(--shadow-sm);
 }
 
-/* 禁用按钮 */
+/* 禁用按钮 - 渐变炫彩风格 */
 .btn-disabled {
-  background: var(--color-border);
+  background: linear-gradient(180deg, #F5F5F5 0%, #E8E8E8 100%);
   color: var(--color-text-placeholder);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
