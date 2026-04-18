@@ -41,7 +41,6 @@
             placeholder="请输入视频或图集作品链接" 
             value="{{videoUrl}}"
             bindinput="onUrlInput"
-            auto-height
           ></textarea>
         </view>
       </view>
@@ -53,11 +52,9 @@
           loading="{{loading || adLoading}}"
           disabled="{{loading || adLoading || !videoUrl}}"
         >
-          <view class="btn-content">
-            <view class="btn-text">
-              {{loading ? '去水印中，请稍后...' : (adLoading ? '广告加载中...' : '一键去水印')}}
-            </view>
-          </view>
+          <text class="btn-text">
+            {{loading ? '去水印中，请稍后...' : (adLoading ? '广告加载中...' : '一键去水印')}}
+          </text>
         </button>
       </view>
     </view>
@@ -66,10 +63,7 @@
     <view class="customer-service-wrapper">
       <view class="customer-service-ripple"></view>
       <button class="customer-service-float" bindtap="showCustomerServiceTip" open-type="contact">
-        <view class="service-text-wrapper">
-          <text class="service-text-line">咨询</text>
-          <text class="service-text-line">客服</text>
-        </view>
+        <image class="service-icon" src="/images/kf.png" mode="aspectFit"></image>
       </button>
     </view>
 
@@ -170,4 +164,7 @@
       <view class="tech-support-line">本小程序不储存任何视频及图片</view>
     </view>
   </view>
+  
+  <!-- 底部导航栏 -->
+  <custom-tabbar currentIndex="0"></custom-tabbar>
 </view>

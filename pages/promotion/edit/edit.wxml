@@ -1,0 +1,71 @@
+<view class="page-container">
+  <view class="form-container">
+    <view class="form-item">
+      <view class="form-label">标题 <text class="required">*</text></view>
+      <view class="input-wrapper">
+        <text wx:if="{{!inputFocus.title && !formData.title}}" class="input-placeholder">请输入推广标题</text>
+        <input 
+          maxlength="100" 
+          bindinput="onTitleInput"
+          bindfocus="onTitleFocus"
+          bindblur="onTitleBlur"
+          value="{{formData.title}}"
+        />
+      </view>
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">描述</view>
+      <view class="textarea-wrapper">
+        <text wx:if="{{!inputFocus.description && !formData.description}}" class="input-placeholder">请输入推广描述</text>
+        <textarea 
+          maxlength="500" 
+          bindinput="onDescriptionInput"
+          bindfocus="onDescriptionFocus"
+          bindblur="onDescriptionBlur"
+          value="{{formData.description}}"
+        ></textarea>
+      </view>
+      <view class="textarea-counter">{{formData.description.length || 0}}/500</view>
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">小程序链接 <text class="required">*</text></view>
+      <view class="textarea-wrapper">
+        <text wx:if="{{!inputFocus.link && !formData.link}}" class="input-placeholder">请输入小程序链接</text>
+        <textarea 
+          bindinput="onLinkInput"
+          bindfocus="onLinkFocus"
+          bindblur="onLinkBlur"
+          value="{{formData.link}}"
+          auto-height
+        ></textarea>
+      </view>
+      <view class="form-hint">请填写小程序链接，如：#小程序://芊艺小工具/keQE1dEnVOCWgCv</view>
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">封面图</view>
+      <view class="cover-uploader-box" bindtap="chooseImage">
+        <view wx:if="{{formData.cover_image}}" class="cover-uploader has-image">
+          <image class="cover-preview" src="{{formData.cover_image}}" mode="aspectFill"></image>
+        </view>
+        <view wx:else class="upload-placeholder">
+          <view class="upload-icon">+</view>
+          <text class="upload-text">添加封面</text>
+        </view>
+      </view>
+      <view wx:if="{{formData.cover_image}}" class="change-cover-btn" bindtap="chooseImage">更换封面</view>
+      <view class="form-hint">建议尺寸：750x400px，支持jpg、png格式</view>
+    </view>
+
+    <view class="form-actions">
+      <view 
+        class="submit-btn {{submitting ? 'disabled' : ''}}" 
+        bindtap="onSubmit"
+      >
+        {{submitting ? '保存中...' : '保存'}}
+      </view>
+    </view>
+  </view>
+</view>

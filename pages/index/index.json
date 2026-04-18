@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "短视频无水印下载"
+  "navigationBarTitleText": "短视频无水印下载",
+  "usingComponents": {
+    "custom-tabbar": "/components/tabbar/tabbar"
+  }
 }

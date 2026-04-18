@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "个人中心",
+  "navigationBarBackgroundColor": "#FF6B35",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#FFF5EB",
+  "disableScroll": false,
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "custom-tabbar": "/components/tabbar/tabbar"
+  }
+}

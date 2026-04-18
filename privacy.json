@@ -1,0 +1,13 @@
+{
+  "requiredPrivatePermissions": {
+    "chooseImage": {
+      "desc": "用于选择封面图片"
+    },
+    "chooseMedia": {
+      "desc": "用于选择封面图片"
+    },
+    "writePhotosAlbum": {
+      "desc": "用于保存封面图片"
+    }
+  }
+}

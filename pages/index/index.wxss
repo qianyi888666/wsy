@@ -197,11 +197,13 @@
   font-size: 30rpx;
   background: transparent;
   color: var(--color-text-primary);
-  min-height: 140rpx;
+  min-height: 130rpx;
+  height: 85rpx;
   box-sizing: border-box;
   transition: all 0.3s ease;
   line-height: 1.6;
   font-weight: 400;
+  text-align: left;
 }
 
 .input-modern::placeholder {
@@ -266,13 +268,13 @@
 
 .btn-disabled {
   background: linear-gradient(180deg, #F5F5F5 0%, #E8E8E8 100%);
-  color: var(--color-text-placeholder);
+  color: #000000;
   box-shadow: none;
   border: 1px solid var(--color-border);
 }
 
 .btn-disabled .btn-text {
-  color: var(--color-text-placeholder);
+  color: #000000;
 }
 
 .btn-content {
@@ -286,6 +288,12 @@
   font-weight: 700;
   letter-spacing: 2rpx;
   color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50rpx;
+  line-height: 0rpx;
 }
 
 .btn-modern .btn-text {
@@ -296,7 +304,7 @@
 
 .customer-service-wrapper {
   position: fixed;
-  bottom: 180rpx;
+  bottom: 300rpx;
   right: 32rpx;
   width: 100rpx;
   height: 100rpx;
@@ -389,6 +397,11 @@
 
 .service-text-line:first-child {
   margin-bottom: 4rpx;
+}
+
+.service-icon {
+  width: 60rpx;
+  height: 60rpx;
 }
 
 @keyframes ripple {
@@ -591,7 +604,7 @@
   height: 420rpx;
   overflow: hidden;
   border-bottom: 2px solid var(--color-border);
-  background: linear-gradient(135deg, #FFF5EB 0%, #FFE8CC 100%);
+  background: #000000;
 }
 
 .video-cover-modern {
@@ -619,7 +632,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 107, 53, 0.4);
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -827,7 +840,7 @@
 
 .tech-support-fixed {
   position: fixed;
-  bottom: 0;
+  bottom: 100rpx;
   left: 0;
   right: 0;
   background: linear-gradient(135deg, #FFF5EB 0%, #FFE8CC 100%);
@@ -835,6 +848,7 @@
   padding: var(--spacing-md) var(--spacing-lg);
   z-index: 999;
   box-shadow: var(--shadow-sm);
+  padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom));
 }
 
 .tech-support-content {
@@ -850,3 +864,4 @@
   line-height: 1.5;
   text-align: center;
 }
+

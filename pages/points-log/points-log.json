@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "custom-tabbar": "/components/tabbar/tabbar"
+  },
+  "navigationBarTitleText": "积分记录",
+  "navigationBarBackgroundColor": "#FF6B35",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
+  "disableScroll": false
+}

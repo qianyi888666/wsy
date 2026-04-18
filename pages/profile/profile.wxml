@@ -1,0 +1,124 @@
+<!--pages/profile/profile.wxml-->
+<view class="profile-container">
+  <!-- 顶部用户信息区 -->
+  <view class="user-info-section">
+    <view class="user-info-bg"></view>
+    <view class="user-info-content">
+      <!-- 未登录状态 - 点击登录 -->
+      <block wx:if="{{!isLoggedIn && loginStep === 'start'}}">
+        <view class="login-prompt">
+          <view class="avatar-wrapper">
+            <image class="avatar" src="/images/default-avatar.png" mode="aspectFill"></image>
+          </view>
+          <view class="nickname-center">未登录</view>
+          <button class="login-btn {{loggingOut ? 'btn-pressing' : ''}}" bindtap="handleQuickLogin">
+            <text wx:if="{{!loggingOut}}">一键登录</text>
+            <text wx:else>登录中...</text>
+          </button>
+        </view>
+      </block>
+
+      <!-- 未登录状态 - 完善资料（数据库无用户） -->
+      <block wx:elif="{{!isLoggedIn && loginStep === 'complete'}}">
+        <view class="login-prompt">
+          <view class="login-tip">请完善您的个人信息</view>
+          <!-- 头像选择 -->
+          <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+            <image class="avatar" src="{{tempAvatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+          </button>
+          <!-- 昵称输入 -->
+          <view class="nickname-input-wrapper">
+            <input 
+              class="nickname-input" 
+              type="nickname" 
+              value="{{tempNickname}}" 
+              placeholder="请输入昵称"
+              bindinput="onNicknameInput"
+              maxlength="20"
+            />
+          </view>
+          <!-- 登录按钮 -->
+          <button class="login-btn" bindtap="handleLogin">保存并登录</button>
+        </view>
+      </block>
+      
+      <!-- 已登录状态 -->
+      <block wx:else>
+        <view class="avatar-wrapper" bindtap="goToEdit">
+          <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill"></image>
+        </view>
+        <view class="user-details">
+          <view class="nickname-row" bindtap="goToEdit">
+            <view class="nickname">{{userInfo.nickname}}</view>
+            <view class="settings-icon">
+              <text>⚙️</text>
+            </view>
+          </view>
+          <view class="user-id">ID：{{userInfo.userToken || userInfo.userId}}</view>
+          <view class="user-points">可用积分：{{pointsInfo.balance}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 功能菜单列表 -->
+  <view class="menu-section">
+    <view class="menu-list">
+      <block wx:for="{{menuList}}" wx:key="id">
+        <button 
+          wx:if="{{item.id === 'service'}}"
+          class="menu-item {{index < menuList.length - 1 ? 'has-border' : ''}}" 
+          open-type="contact"
+        >
+          <text class="menu-icon">{{item.icon}}</text>
+          <text class="menu-name">{{item.name}}</text>
+          <text class="menu-arrow">></text>
+        </button>
+        <view 
+          wx:else
+          class="menu-item {{index < menuList.length - 1 ? 'has-border' : ''}}" 
+          bindtap="onMenuTap"
+          data-item="{{item}}"
+        >
+          <text class="menu-icon">{{item.icon}}</text>
+          <text class="menu-name">{{item.name}}</text>
+          <text class="menu-arrow">></text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 关于我们弹窗 -->
+  <view class="modal-mask" wx:if="{{showAboutModal}}" bindtap="closeAboutModal">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">关于我们</text>
+        <view class="modal-close" bindtap="closeAboutModal">×</view>
+      </view>
+      <view class="modal-body">
+        <view class="version-item">
+          <text class="version-label">版本号</text>
+          <text class="version-value">V4.0.0</text>
+        </view>
+        <view class="version-desc">
+          <view class="desc-line">视频或图集素材归平台<text class="highlight">作者所有</text></view>
+          <view class="desc-line">本小程序不储存任何视频及图片</view>
+        </view>
+        <view class="copyright">
+          <text>© {{currentYear}} 芊艺科技</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 退出登录按钮 -->
+  <view class="logout-section" wx:if="{{isLoggedIn}}">
+    <button class="logout-btn {{loggingOut ? 'btn-pressing' : ''}}" bindtap="handleLogout">
+      <text wx:if="{{!loggingOut}}">退出登录</text>
+      <text wx:else>退出中...</text>
+    </button>
+  </view>
+
+  <!-- 底部导航栏 -->
+  <custom-tabbar currentIndex="2"></custom-tabbar>
+</view>

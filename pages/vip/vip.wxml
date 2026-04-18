@@ -1,0 +1,120 @@
+<view class="vip-container">
+  <!-- 顶部用户信息区 -->
+  <view class="user-info-section">
+    <view class="user-info-bg"></view>
+    <view class="user-info-content">
+      <block wx:if="{{isLoggedIn}}">
+        <view class="avatar-wrapper">
+          <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill"></image>
+        </view>
+        <view class="user-details">
+          <view class="nickname">{{userInfo.nickname}}</view>
+          <view class="user-id">ID：{{userInfo.userToken || userInfo.userId}}</view>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="login-prompt">
+          <view class="login-tip">请先登录后查看积分</view>
+          <button class="login-btn" bindtap="goToLogin">去登录</button>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 积分展示区 -->
+  <view class="points-section">
+    <view class="points-card">
+      <view class="points-icon">💰</view>
+      <view class="points-label">当前积分</view>
+      <view class="points-value">{{pointsInfo.balance}}</view>
+      <view class="points-stats">
+        <view class="points-stat">
+          <text class="stat-label">累计获得</text>
+          <text class="stat-value">{{pointsInfo.totalEarned}}</text>
+        </view>
+        <view class="points-divider">|</view>
+        <view class="points-stat">
+          <text class="stat-label">累计消耗</text>
+          <text class="stat-value">{{pointsInfo.totalConsumed}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 免费解析次数区 -->
+  <view class="free-section">
+    <view class="section-title">免费解析次数</view>
+    <view class="free-card">
+      <view class="free-info">
+        <text class="free-label">今日免费：</text>
+        <text class="free-value">{{pointsInfo.freeParseUsed}}/{{pointsInfo.defaultParseLimit}} 次</text>
+      </view>
+      <view class="progress-bar">
+        <view class="progress-bg">
+          <view class="progress-fill" style="width: {{freeProgress}}%"></view>
+        </view>
+        <text class="progress-text">{{freeProgress}}%</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 今日任务区 -->
+  <view class="task-section">
+    <view class="section-title">今日任务</view>
+    <view class="task-card">
+      <view class="task-header">
+        <text class="task-icon">📺</text>
+        <text class="task-name">观看视频广告</text>
+      </view>
+      <view class="task-info">
+        <view class="task-detail">
+          <text class="detail-label">今日已看：</text>
+          <text class="detail-value">{{pointsInfo.todayWatched}}/{{pointsInfo.dailyLimit}} 次</text>
+        </view>
+        <view class="task-detail">
+          <text class="detail-label">可获积分：</text>
+          <text class="detail-value accent">{{pointsInfo.dailyLimit - pointsInfo.todayWatched}}</text>
+        </view>
+      </view>
+      <view 
+        class="claim-btn {{!pointsInfo.canWatchMore || isLoading ? 'disabled' : ''}}" 
+        bindtap="handleClaimPoints"
+      >
+        <view class="btn-content">
+          <text class="btn-icon">🎬</text>
+          <text class="btn-text">{{isLoading ? '领取中...' : '领取积分'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 积分说明区 -->
+  <view class="rules-section">
+    <view class="section-title">积分说明</view>
+    <view class="rules-card">
+      <view class="rule-item">
+        <text class="rule-bullet">•</text>
+        <text class="rule-text">每日免费解析 {{pointsInfo.defaultParseLimit}} 次</text>
+      </view>
+      <view class="rule-item">
+        <text class="rule-bullet">•</text>
+        <text class="rule-text">观看视频广告获得 1 积分/次</text>
+      </view>
+      <view class="rule-item">
+        <text class="rule-bullet">•</text>
+        <text class="rule-text">每日最多观看 {{pointsInfo.dailyLimit}} 次</text>
+      </view>
+      <view class="rule-item">
+        <text class="rule-bullet">•</text>
+        <text class="rule-text">积分用于抵扣额外解析次数</text>
+      </view>
+      <view class="rule-item">
+        <text class="rule-bullet">•</text>
+        <text class="rule-text">积分永不过期</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部导航 -->
+  <custom-tabbar currentIndex="2"></custom-tabbar>
+</view>

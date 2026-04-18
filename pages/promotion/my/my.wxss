@@ -1,0 +1,251 @@
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.page-header {
+  padding: 30rpx;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F65 100%);
+}
+
+.page-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.promotion-list {
+  flex: 1;
+  padding: 20rpx;
+  padding-bottom: 160rpx;
+  box-sizing: border-box;
+}
+
+.promotion-item {
+  display: flex;
+  background-color: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.item-cover {
+  width: 200rpx;
+  height: 200rpx;
+  flex-shrink: 0;
+  background-color: #f0f0f0;
+}
+
+.item-content {
+  flex: 1;
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.item-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-desc {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.4;
+  margin-top: 8rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 12rpx;
+}
+
+.status {
+  font-size: 22rpx;
+  padding: 2rpx 12rpx;
+  border-radius: 20rpx;
+  margin-right: 12rpx;
+  line-height: 32rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36rpx;
+  box-sizing: border-box;
+}
+
+.status.active {
+  background-color: #e6f7ed;
+  color: #07c160;
+}
+
+.status.inactive {
+  background-color: #f5f5f5;
+  color: #999;
+}
+
+.category {
+  font-size: 22rpx;
+  color: #FF6B35;
+  background-color: #FFF5EB;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+  margin-right: 12rpx;
+}
+
+.date {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.item-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20rpx;
+  border-left: 1rpx solid #f0f0f0;
+}
+
+.action-btn {
+  font-size: 24rpx;
+  padding: 12rpx 24rpx;
+  border-radius: 8rpx;
+  text-align: center;
+  margin-bottom: 12rpx;
+}
+
+.action-btn:last-child {
+  margin-bottom: 0;
+}
+
+.action-btn.edit {
+  background-color: #FFF5EB;
+  color: #FF6B35;
+  border: 1rpx solid #FF6B35;
+}
+
+.action-btn.up {
+  background-color: #e6f7ed;
+  color: #07c160;
+  border: 1rpx solid #07c160;
+}
+
+.action-btn.down {
+  background-color: #fff5f5;
+  color: #ff4d4f;
+  border: 1rpx solid #ff4d4f;
+}
+
+.action-btn.delete {
+  background-color: #fff5f5;
+  color: #ff4d4f;
+  border: 1rpx solid #ff4d4f;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.empty-icon {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 30rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: #999;
+  margin-bottom: 10rpx;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  color: #ccc;
+}
+
+.loading-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30rpx 0;
+}
+
+.loading-icon {
+  width: 32rpx;
+  height: 32rpx;
+  border: 4rpx solid #eee;
+  border-top-color: #FF6B35;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 12rpx;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.no-more {
+  text-align: center;
+  padding: 30rpx 0;
+  font-size: 24rpx;
+  color: #ccc;
+}
+
+.publish-btn-wrap {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 30rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background-color: #fff;
+  box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.publish-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F65 100%);
+  border-radius: 50rpx;
+  padding: 24rpx 0;
+}
+
+.btn-icon {
+  font-size: 36rpx;
+  color: #fff;
+  margin-right: 12rpx;
+  font-weight: bold;
+}
+
+.btn-text {
+  font-size: 32rpx;
+  color: #fff;
+  font-weight: 600;
+}

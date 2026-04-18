@@ -1,0 +1,140 @@
+/* pages/points-log/points-log.wxss */
+page {
+  height: 100%;
+  overflow: hidden;
+}
+
+.points-log-container {
+  min-height: 100%;
+  background-color: #F5F5F5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tab筛选 */
+.tab-section {
+  background-color: #FFFFFF;
+  padding: 20rpx 30rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.tab-list {
+  display: flex;
+  background-color: #F5F5F5;
+  border-radius: 12rpx;
+  padding: 6rpx;
+}
+
+.tab-item {
+  flex: 1;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  color: #666666;
+  border-radius: 8rpx;
+  transition: all 0.2s ease;
+}
+
+.tab-item.active {
+  background-color: #FF6B35;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+/* 记录列表 */
+.log-list {
+  flex: 1;
+  padding: 20rpx 30rpx;
+  padding-bottom: 200rpx;
+  box-sizing: border-box;
+}
+
+.log-item {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.log-icon {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFF5EB;
+  border-radius: 50%;
+  font-size: 36rpx;
+  margin-right: 20rpx;
+}
+
+.log-content {
+  flex: 1;
+}
+
+.log-action {
+  font-size: 28rpx;
+  color: #333333;
+  font-weight: 500;
+  margin-bottom: 8rpx;
+}
+
+.log-time {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.log-points {
+  font-size: 32rpx;
+  font-weight: 700;
+  min-width: 100rpx;
+  text-align: right;
+}
+
+.log-points.positive {
+  color: #52C41A;
+}
+
+.log-points.negative {
+  color: #FF4D4F;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+/* 加载更多 */
+.load-more {
+  padding: 30rpx 0;
+  text-align: center;
+}
+
+.loading-text {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.no-more-text {
+  font-size: 24rpx;
+  color: #CCCCCC;
+}

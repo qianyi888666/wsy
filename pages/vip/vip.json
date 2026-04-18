@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "custom-tabbar": "/components/tabbar/tabbar"
+  },
+  "navigationBarTitleText": "会员中心",
+  "navigationBarBackgroundColor": "#FF6B35",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": false,
+  "disableScroll": false
+}

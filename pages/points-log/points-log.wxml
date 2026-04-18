@@ -1,0 +1,73 @@
+<view class="points-log-container">
+  <!-- Tab筛选 -->
+  <view class="tab-section">
+    <view class="tab-list">
+      <view 
+        class="tab-item {{currentTab === 'all' ? 'active' : ''}}" 
+        bindtap="switchTab" 
+        data-tab="all"
+      >
+        全部
+      </view>
+      <view 
+        class="tab-item {{currentTab === 'earn' ? 'active' : ''}}" 
+        bindtap="switchTab" 
+        data-tab="earn"
+      >
+        获得
+      </view>
+      <view 
+        class="tab-item {{currentTab === 'consume' ? 'active' : ''}}" 
+        bindtap="switchTab" 
+        data-tab="consume"
+      >
+        消耗
+      </view>
+    </view>
+  </view>
+
+  <!-- 积分记录列表 -->
+  <scroll-view 
+    class="log-list" 
+    scroll-y 
+    bindscrolltolower="loadMore"
+    enable-flex="true"
+  >
+    <block wx:if="{{logList.length > 0}}">
+      <view class="log-item" wx:for="{{logList}}" wx:key="id">
+        <view class="log-icon">
+          <text wx:if="{{item.points > 0}}">📺</text>
+          <text wx:else>🎬</text>
+        </view>
+        <view class="log-content">
+          <view class="log-action">{{item.actionName}}</view>
+          <view class="log-time">{{item.createdAt}}</view>
+        </view>
+        <view class="log-points {{item.points > 0 ? 'positive' : 'negative'}}">
+          <text wx:if="{{item.points > 0}}">+</text>{{item.points}}
+        </view>
+      </view>
+    </block>
+    
+    <!-- 空状态 -->
+    <block wx:else>
+      <view class="empty-state">
+        <view class="empty-icon">📭</view>
+        <view class="empty-text">暂无积分记录</view>
+      </view>
+    </block>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{logList.length > 0}}">
+      <block wx:if="{{isLoading}}">
+        <view class="loading-text">加载中...</view>
+      </block>
+      <block wx:elif="{{noMore}}">
+        <view class="no-more-text">没有更多了</view>
+      </block>
+    </view>
+  </scroll-view>
+
+  <!-- 底部导航 -->
+  <custom-tabbar currentIndex="2"></custom-tabbar>
+</view>

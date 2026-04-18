@@ -49,6 +49,9 @@
     "swc": false,
     "disableSWC": true
   },
+  "privacyChannel": {
+    "desc": "用于选择封面图片"
+  },
   "compileType": "miniprogram",
   "libVersion": "3.12.1",
   "appid": "wxc272eca235cd46e6",

@@ -1,17 +1,14 @@
 App({
   onLaunch: function () {
-    // 检测设备平台
     this.detectPlatform()
+    this.checkLoginStatus()
   },
   
-  // 检测设备平台
   detectPlatform: function() {
     try {
       const deviceInfo = wx.getDeviceInfo()
       
-      // 检测是否为 HarmonyOS
       if (deviceInfo.platform === 'harmony') {
-        // 可以在这里添加 HarmonyOS 特定的兼容性处理
         this.globalData.isHarmonyOS = true
       } else {
         this.globalData.isHarmonyOS = false
@@ -21,9 +18,31 @@ App({
     }
   },
   
+  checkLoginStatus: function() {
+    const isLoggedIn = wx.getStorageSync('isLoggedIn')
+    const userInfo = wx.getStorageSync('userInfo')
+    
+    if (isLoggedIn && userInfo) {
+      this.globalData.userInfo = userInfo
+      this.globalData.isLoggedIn = true
+    } else {
+      this.globalData.userInfo = null
+      this.globalData.isLoggedIn = false
+    }
+  },
+  
   globalData: {
     userInfo: null,
-    apiBaseUrl: 'https://xxxxxx.com', // API基础地址，请修改为实际地址
-    isHarmonyOS: false // 是否为 HarmonyOS 平台
+    isLoggedIn: false,
+    openid: null,
+    apiBaseUrl: 'https://dy.qyhlq.top/douyin/',
+    isHarmonyOS: false,
+    pointsInfo: {
+      balance: 0,
+      defaultParseLimit: 3,
+      freeParseUsed: 0,
+      dailyLimit: 10,
+      todayWatched: 0
+    }
   }
 })

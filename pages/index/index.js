@@ -130,48 +130,85 @@ Page({
       return
     }
 
-    // 显示加载状态
     this.setData({
       loading: true,
       error: '',
       videoData: null
     })
 
-    // 调用统一解析API
-    api.parseVideo(videoUrl)
+    const app = getApp()
+    const auth = require('../../utils/auth.js')
+    const userInfo = auth.getStoredUserInfo()
+    
+    const userToken = userInfo ? (userInfo.userToken || '') : ''
+    const userId = userInfo ? userInfo.userId : 0
+
+    api.parseVideo(videoUrl, userToken, userId)
       .then(res => {
-        // 检查API返回的数据是否有效
         if (!res || !res.data) {
           throw new Error('未找到有效媒体信息')
         }
         
-        // 标准化数据结构
         const videoData = this.normalizeVideoData(res.data, 'unknown')
+        
+        if (res.data.points_balance !== undefined) {
+          app.globalData.pointsInfo.balance = res.data.points_balance
+        }
         
         this.setData({
           loading: false,
           videoData,
-          showVideoPreview: false // 重置视频预览状态
+          showVideoPreview: false
+        })
+        
+        wx.pageScrollTo({
+          scrollTop: 500,
+          duration: 300
         })
       })
       .catch(err => {
         let errorMessage = '解析失败，请检查链接是否正确或稍后重试'
         
-        // 根据错误类型提供更具体的错误信息
         if (err) {
-          // 优先检查错误代码
-          if (err.code === 1002 || err.code === 1001) {
+          if (err.code === 401) {
+            wx.showModal({
+              title: '提示',
+              content: err.message || '请先登录后再使用解析功能',
+              confirmText: '去登录',
+              success: (res) => {
+                if (res.confirm) {
+                  wx.switchTab({
+                    url: '/pages/profile/profile'
+                  })
+                }
+              }
+            })
+            return
+          }
+          else if (err.code === 1002 || err.code === 1001) {
             errorMessage = '未找到有效媒体信息，请检查链接是否为有效的短视频链接'
           }
-          // 处理会员等级不足的错误
           else if (err.code === 1005) {
             errorMessage = '会员等级不足，请联系开通会员或者升级会员等级'
           }
-          // 处理次数不足的错误
           else if (err.code === 1004) {
-            errorMessage = '次数不足，请升级VIP等级或明天再试'
+            errorMessage = err.message || '积分不足，无法进行视频解析'
           }
-          // 处理API返回的错误消息
+          else if (err.message && err.message.includes('请先登录')) {
+            wx.showModal({
+              title: '提示',
+              content: err.message,
+              confirmText: '去登录',
+              success: (res) => {
+                if (res.confirm) {
+                  wx.switchTab({
+                    url: '/pages/profile/profile'
+                  })
+                }
+              }
+            })
+            return
+          }
           else if (err.message && err.message.includes('未找到有效媒体信息')) {
             errorMessage = '未找到有效媒体信息，请检查链接是否为有效的短视频链接'
           } else if (err.message && err.message.includes('网络请求失败')) {
@@ -192,22 +229,37 @@ Page({
 
   // 解析视频
   parseVideo: function() {
-    // 检查输入是否为空
+    const auth = require('../../utils/auth.js')
+    const isLoggedIn = auth.checkLoginStatus()
+    
+    if (!isLoggedIn) {
+      wx.showModal({
+        title: '提示',
+        content: '请先登录后再使用解析功能',
+        confirmText: '去登录',
+        success: (res) => {
+          if (res.confirm) {
+            wx.switchTab({
+              url: '/pages/profile/profile'
+            })
+          }
+        }
+      })
+      return
+    }
+    
     let videoUrl = this.data.videoUrl.trim()
     if (!videoUrl) {
       this.setData({ error: '请输入视频链接' })
       return
     }
 
-    // 尝试从文本中提取视频链接
     const extractedUrl = this.extractVideoUrl(videoUrl)
     if (extractedUrl) {
       videoUrl = extractedUrl
-      // 立即更新输入框中的值为提取的纯净链接
       this.setData({ videoUrl })
     }
 
-    // 立即清空上一次的解析结果
     this.setData({
       videoData: null,
       error: '',
@@ -215,7 +267,6 @@ Page({
       showVideoPreview: false
     })
 
-    // 直接解析视频
     this.doParseVideo()
   },
 
@@ -672,6 +723,19 @@ Page({
       .catch(err => {
         // 失败时使用默认内容，不显示错误提示
       })
+  },
+
+  // 跳转到个人中心页面
+  goToProfile: function() {
+    wx.navigateTo({
+      url: '/pages/profile/profile',
+      fail: function() {
+        wx.showToast({
+          title: '页面跳转失败',
+          icon: 'none'
+        });
+      }
+    });
   },
 
   // 显示客服提示

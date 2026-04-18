@@ -1,0 +1,59 @@
+<!--pages/profile/edit/edit.wxml-->
+<view class="edit-container">
+  <!-- 表单内容 -->
+  <view class="form-content">
+    <!-- 头像区域 -->
+    <view class="avatar-section">
+      <view class="avatar-wrapper" bindtap="onChooseAvatar">
+        <image 
+          class="avatar" 
+          src="{{avatarUrl || '/images/default-avatar.png'}}" 
+          mode="aspectFill"
+        ></image>
+        <view class="avatar-mask">
+          <text class="camera-icon">📷</text>
+        </view>
+      </view>
+      <view class="avatar-tip">点击更换头像</view>
+    </view>
+
+    <!-- 昵称输入区域 -->
+    <view class="input-section">
+      <view class="input-label">昵称</view>
+      <view class="input-wrapper">
+        <input 
+          class="nickname-input" 
+          type="text" 
+          value="{{nickname}}" 
+          placeholder="请输入昵称"
+          maxlength="20"
+          bindinput="onNicknameInput"
+          bindblur="onNicknameBlur"
+        />
+      </view>
+      <view class="input-counter {{errorMsg ? 'has-error' : ''}}">
+        {{nickname.length}}/20
+        <text class="error-text" wx:if="{{errorMsg}}">{{errorMsg}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部按钮区域 -->
+  <view class="btn-section">
+    <button 
+      class="btn-secondary" 
+      bindtap="onNavigateBack"
+      disabled="{{submitting}}"
+    >
+      取消
+    </button>
+    <button 
+      class="btn-primary {{submitting ? 'btn-loading' : ''}}" 
+      bindtap="onSubmit"
+      disabled="{{submitting}}"
+    >
+      <text wx:if="{{!submitting}}">保存</text>
+      <text wx:else>保存中...</text>
+    </button>
+  </view>
+</view>
