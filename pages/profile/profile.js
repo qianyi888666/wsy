@@ -31,7 +31,7 @@ Page({
       { id: 'vip', name: '会员中心', icon: '🎫', path: '', enabled: false },
       { id: 'promotion', name: '互助推广', icon: '🚀', path: '', enabled: true },
       { id: 'service', name: '联系客服', icon: '📞', path: '', enabled: true },
-      { id: 'tutorial', name: '使用教程', icon: '📖', path: '', enabled: false },
+      { id: 'tutorial', name: '使用教程', icon: '📖', path: '', enabled: true },
       { id: 'about', name: '关于我们', icon: 'ℹ️', path: '', enabled: true }
     ],
     showAboutModal: false,
@@ -410,6 +410,13 @@ Page({
     if (item.id === 'promotion') {
       wx.navigateTo({
         url: '/pages/promotion/my/my'
+      })
+      return
+    }
+
+    if (item.id === 'tutorial') {
+      wx.navigateTo({
+        url: '/pages/tutorial/tutorial'
       })
       return
     }

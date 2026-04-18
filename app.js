@@ -35,7 +35,7 @@ App({
     userInfo: null,
     isLoggedIn: false,
     openid: null,
-    apiBaseUrl: 'https://xxxx.com',
+    apiBaseUrl: 'https://dy.qyhlq.top/douyin/',
     isHarmonyOS: false,
     pointsInfo: {
       balance: 0,

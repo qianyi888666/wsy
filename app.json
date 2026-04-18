@@ -8,7 +8,8 @@
     "pages/points-log/points-log",
     "pages/promotion/edit/edit",
     "pages/webview/webview",
-    "pages/profile/edit/edit"
+    "pages/profile/edit/edit",
+    "pages/tutorial/tutorial"
   ],
   "window": {
     "backgroundTextStyle": "dark",

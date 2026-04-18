@@ -1,0 +1,35 @@
+<!--pages/tutorial/tutorial.wxml-->
+<view class="tutorial-container">
+  <view class="tutorial-header">
+    <text class="header-title">小程序使用教程</text>
+    <text class="header-subtitle">欢迎使用短视频无水印下载小程序</text>
+  </view>
+
+  <scroll-view class="tutorial-content" scroll-y="true">
+    <block wx:for="{{tutorialContent}}" wx:key="index">
+      <view class="section">
+        <view class="section-header">
+          <text class="section-number">{{index + 1}}</text>
+          <text class="section-title">{{item.title}}</text>
+        </view>
+        
+        <view class="section-desc">{{item.content}}</view>
+
+        <block wx:if="{{item.sections && item.sections.length > 0}}">
+          <block wx:for="{{item.sections}}" wx:for-item="section" wx:for-index="sindex" wx:key="sindex">
+            <view class="subsection">
+              <view class="subsection-title">{{section.title}}</view>
+              <view class="subsection-content">
+                <text selectable="true">{{section.content}}</text>
+              </view>
+            </view>
+          </block>
+        </block>
+      </view>
+    </block>
+
+    <view class="footer">
+      <text class="footer-text">祝您使用愉快！</text>
+    </view>
+  </scroll-view>
+</view>
