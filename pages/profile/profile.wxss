@@ -1,12 +1,11 @@
 /* pages/profile/profile.wxss */
-page {
-  height: 100%;
-}
 
-.profile-container {
-  height: 100%;
+/* 页面容器 */
+.page-container {
+  min-height: 100vh;
   background-color: #F5F5F5;
-  padding-bottom: 200rpx;
+  padding-bottom: calc(100rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
 }
 
 /* 顶部用户信息区 */
@@ -186,62 +185,6 @@ page {
   border: none;
 }
 
-/* 快捷功能入口 */
-.quick-entry-section {
-  margin: 30rpx;
-  padding: 30rpx;
-  background-color: #FFFFFF;
-  border-radius: 20rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
-}
-
-.section-title {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #333333;
-  margin-bottom: 24rpx;
-}
-
-.quick-entry-scroll {
-  width: 100%;
-}
-
-.quick-entry-list {
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-.quick-entry-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 180rpx;
-  padding: 20rpx 0;
-  margin-right: 20rpx;
-  background-color: #FFF5EB;
-  border-radius: 16rpx;
-  flex-shrink: 0;
-}
-
-.quick-entry-item:last-child {
-  margin-right: 0;
-}
-
-.quick-entry-item.disabled {
-  opacity: 0.6;
-}
-
-.quick-entry-icon {
-  font-size: 48rpx;
-  margin-bottom: 12rpx;
-}
-
-.quick-entry-name {
-  font-size: 24rpx;
-  color: #666666;
-}
-
 /* 功能菜单列表 */
 .menu-section {
   margin: 0 30rpx;
@@ -280,11 +223,6 @@ button.menu-item::after {
   border-bottom: 1rpx solid #F5F5F5;
 }
 
-.menu-item-left {
-  display: flex;
-  align-items: center;
-}
-
 .menu-icon {
   font-size: 40rpx;
   margin-right: 20rpx;
@@ -298,46 +236,9 @@ button.menu-item::after {
   text-align: left;
 }
 
-button.menu-item {
-  display: flex;
-  align-items: center;
-  text-align: left;
-}
-
 .menu-arrow {
   font-size: 28rpx;
   color: #CCCCCC;
-}
-
-button.menu-item {
-  background-color: #FFFFFF;
-  border: none;
-  border-radius: 0;
-  margin: 0;
-  width: 100%;
-  line-height: normal;
-}
-
-button.menu-item::after {
-  display: none;
-}
-
-/* 底部版权信息 */
-.footer-section {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 30rpx;
-  background-color: #FFFFFF;
-  text-align: center;
-  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
-}
-
-.footer-text {
-  font-size: 24rpx;
-  color: #999999;
-  margin-bottom: 8rpx;
 }
 
 /* 关于我们弹窗 */
@@ -442,18 +343,6 @@ button.menu-item::after {
   font-size: 22rpx;
   color: #BBBBBB;
   line-height: 1.8;
-}
-
-.version-logo {
-  width: 120rpx;
-  height: 120rpx;
-  margin: 0 auto 24rpx;
-  display: block;
-}
-
-.footer-version {
-  font-size: 22rpx;
-  color: #CCCCCC;
 }
 
 /* 退出登录按钮 */

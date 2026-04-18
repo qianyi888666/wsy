@@ -1,5 +1,5 @@
 <!--pages/profile/profile.wxml-->
-<view class="profile-container">
+<view class="page-container">
   <!-- 顶部用户信息区 -->
   <view class="user-info-section">
     <view class="user-info-bg"></view>
