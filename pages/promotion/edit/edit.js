@@ -207,8 +207,15 @@ Page({
         }, 1500)
       }).catch(err => {
         this.setData({ submitting: false })
+        
+        let errorMessage = err.message || '修改失败'
+        
+        if (err.code === 1003) {
+          errorMessage = err.message || '内容包含违规信息，请修改后重试'
+        }
+        
         wx.showToast({
-          title: err.message || '修改失败',
+          title: errorMessage,
           icon: 'none'
         })
       })
@@ -224,8 +231,15 @@ Page({
         })
       }).catch(err => {
         this.setData({ submitting: false })
+        
+        let errorMessage = err.message || err.msg || '发布失败'
+        
+        if (err.code === 1003) {
+          errorMessage = err.message || '内容包含违规信息，请修改后重试'
+        }
+        
         wx.showToast({
-          title: err.message || err.msg || '发布失败',
+          title: errorMessage,
           icon: 'none'
         })
       })

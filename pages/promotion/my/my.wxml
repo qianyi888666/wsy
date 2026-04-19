@@ -17,7 +17,6 @@
           <view class="status {{item.status == 1 ? 'active' : 'inactive'}}">
             {{item.status == 1 ? '上架中' : '已下架'}}
           </view>
-          <text class="category" wx:if="{{item.category}}">{{item.category}}</text>
           <text class="date">{{item.created_at}}</text>
         </view>
       </view>

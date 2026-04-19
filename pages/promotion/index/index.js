@@ -93,26 +93,20 @@ Page({
     if (!item.link) return
     
     if (item.link.startsWith('#小程序://')) {
-      wx.showModal({
-        title: '跳转提示',
-        content: '即将跳转到小程序',
-        confirmText: '跳转',
-        cancelText: '取消',
-        success: (res) => {
-          if (res.confirm) {
-            wx.navigateToMiniProgram({
-              shortLink: item.link,
-              fail: (err) => {
-                wx.showToast({ title: '跳转失败: ' + err.errMsg, icon: 'none' })
-              }
-            })
-          } else if (res.cancel) {
+      wx.navigateToMiniProgram({
+        shortLink: item.link,
+        fail: (err) => {
+          if (err.errMsg && err.errMsg.includes('cancel')) {
             wx.showToast({ title: '已取消跳转', icon: 'none' })
+            return
           }
+          wx.showToast({ title: '跳转失败: ' + err.errMsg, icon: 'none' })
         }
       })
     } else {
-      wx.showToast({ title: '链接格式不正确', icon: 'none' })
+      wx.navigateTo({
+        url: '/pages/webview/webview?url=' + encodeURIComponent(item.link)
+      })
     }
   },
 

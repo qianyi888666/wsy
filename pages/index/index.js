@@ -161,15 +161,36 @@ Page({
           showVideoPreview: false
         })
         
+        let successMsg = '解析成功'
+        if (res.data.parse_type === 'free') {
+          const remaining = res.data.free_remaining !== undefined ? res.data.free_remaining : 0
+          successMsg += '，扣除1次免费解析，剩余' + remaining + '次'
+        } else if (res.data.parse_type === 'points') {
+          const remaining = res.data.points_balance !== undefined ? res.data.points_balance : 0
+          successMsg += '，扣除1点积分，剩余' + remaining + '积分'
+        }
+        
+        wx.showToast({
+          title: successMsg,
+          icon: 'none',
+          duration: 3000
+        })
+        
         wx.pageScrollTo({
           scrollTop: 500,
           duration: 300
         })
       })
       .catch(err => {
+        console.log('解析错误:', err)
+        
         let errorMessage = '解析失败，请检查链接是否正确或稍后重试'
         
         if (err) {
+          console.log('err.code:', err.code)
+          console.log('err.message:', err.message)
+          console.log('err.error:', err.error)
+          
           if (err.code === 401) {
             wx.showModal({
               title: '提示',
@@ -185,14 +206,34 @@ Page({
             })
             return
           }
+          else if (err.code === 1004) {
+            const pointsErrorMsg = '当前积分不足，请明天再来或者在会员中心领取积分'
+            this.setData({ 
+              loading: false,
+              error: pointsErrorMsg
+            })
+            wx.showToast({
+              title: pointsErrorMsg,
+              icon: 'none',
+              duration: 3000
+            })
+            wx.pageScrollTo({
+              scrollTop: 500,
+              duration: 300
+            })
+            return
+          }
           else if (err.code === 1002 || err.code === 1001) {
             errorMessage = '未找到有效媒体信息，请检查链接是否为有效的短视频链接'
           }
           else if (err.code === 1005) {
             errorMessage = '会员等级不足，请联系开通会员或者升级会员等级'
           }
-          else if (err.code === 1004) {
-            errorMessage = err.message || '积分不足，无法进行视频解析'
+          else if (err.message && (err.message.includes('积分不足') || err.message.includes('积分均已用完') || err.message.includes('免费次数和积分均已用完'))) {
+            errorMessage = ''
+          }
+          else if (err.message && (err.message.includes('次数不足') || err.message.includes('免费次数') || err.message.includes('已用完'))) {
+            errorMessage = '当前免费次数已用完，请明天再来或者升级VIP'
           }
           else if (err.message && err.message.includes('请先登录')) {
             wx.showModal({
@@ -217,6 +258,15 @@ Page({
             errorMessage = '服务器请求失败，请稍后重试'
           } else if (err.message) {
             errorMessage = err.message
+          }
+          
+          if (err.error && err.error.errMsg) {
+            const errMsg = err.error.errMsg
+            if (errMsg.includes('timeout') || errMsg.includes('超时')) {
+              errorMessage = '请求超时，请稍后重试'
+            } else if (errMsg.includes('cancel')) {
+              errorMessage = '已取消请求'
+            }
           }
         }
         

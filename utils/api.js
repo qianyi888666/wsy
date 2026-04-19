@@ -20,12 +20,14 @@ const request = (url, options = {}) => {
             resolve(res.data)
           } else {
             const errMsg = res.data && (res.data.message || res.data.msg || res.data.error)
-            reject({ message: errMsg || '请求失败' })
+            const errCode = res.data && res.data.code
+            reject({ code: errCode, message: errMsg || '请求失败' })
           }
         } else {
           const errMsg = res.data && (res.data.message || res.data.msg || res.data.error)
+          const errCode = res.data && res.data.code
           reject({
-            success: false,
+            code: errCode,
             message: errMsg || `请求失败，状态码：${res.statusCode}`
           })
         }
