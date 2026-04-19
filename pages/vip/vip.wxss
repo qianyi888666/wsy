@@ -356,6 +356,20 @@ page {
   margin-bottom: 0;
 }
 
+.rule-section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12rpx;
+  padding-left: 16rpx;
+  border-left: 6rpx solid #FF6B35;
+  margin-top: 24rpx;
+}
+
+.rule-section-title:first-child {
+  margin-top: 0;
+}
+
 .rule-bullet {
   color: #FF6B35;
   font-size: 28rpx;

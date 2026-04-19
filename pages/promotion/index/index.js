@@ -3,6 +3,8 @@ const api = require('../../../utils/api.js')
 Page({
   data: {
     promotions: [],
+    imageHeights: {},
+    imageLandscape: {},
     page: 1,
     limit: 20,
     hasMore: true,
@@ -18,12 +20,37 @@ Page({
   },
 
   onShow: function() {
-    this.setData({ page: 1, promotions: [], hasMore: true })
+    this.setData({ page: 1, promotions: [], hasMore: true, imageHeights: {}, imageLandscape: {} })
     this.loadPromotions()
   },
 
   setRefreshFlag: function() {
     this.setData({ refresh: true })
+  },
+
+  onImageLoad: function(e) {
+    const index = e.currentTarget.dataset.index
+    const width = e.detail.width
+    const height = e.detail.height
+    
+    const isLandscape = width > height
+    
+    const cardWidth = 345
+    let heightRpx
+    if (isLandscape) {
+      heightRpx = 400
+    } else {
+      const ratio = height / width
+      heightRpx = ratio * cardWidth
+      if (heightRpx < 400) heightRpx = 400
+    }
+    
+    const key = `imageHeights[${index}]`
+    const landscapeKey = `imageLandscape[${index}]`
+    this.setData({
+      [key]: Math.round(heightRpx),
+      [landscapeKey]: isLandscape
+    })
   },
 
   loadPromotions: function() {

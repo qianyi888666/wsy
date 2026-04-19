@@ -201,10 +201,15 @@ Page({
     if (formData.id) {
       requestData.id = formData.id
       api.updatePromotion(requestData).then(() => {
-        wx.showToast({ title: '修改成功', icon: 'success' })
-        setTimeout(() => {
-          wx.navigateBack()
-        }, 1500)
+        wx.showModal({
+          title: '修改成功',
+          content: '扣除1积分',
+          showCancel: false,
+          confirmText: '知道了',
+          success: () => {
+            wx.navigateBack()
+          }
+        })
       }).catch(err => {
         this.setData({ submitting: false })
         

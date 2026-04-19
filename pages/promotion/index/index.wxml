@@ -25,22 +25,38 @@
     <view class="waterfall" wx:if="{{promotions.length > 0}}">
       <view class="waterfall-row" wx:for="{{promotions}}" wx:key="id" wx:if="{{index % 2 === 0}}">
         <view class="promotion-card" hover-class="promotion-card-hover" hover-stay-time="100" bindtap="onCardTap" data-item="{{promotions[index]}}">
-          <image class="card-cover" src="{{promotions[index].cover_image || '/images/default-cover.png'}}" mode="aspectFill" lazy-load="{{true}}"></image>
-          <view class="card-content">
+          <image 
+            class="card-cover" 
+            src="{{promotions[index].cover_image || '/images/default-cover.png'}}" 
+            mode="widthFix" 
+            lazy-load="{{true}}"
+            bindload="onImageLoad"
+            data-index="{{index}}"
+            style="height:{{imageHeights[index] || 400}}rpx"
+          ></image>
+          <view class="card-overlay {{imageLandscape[index] ? 'light' : ''}}">
             <view class="card-title">{{promotions[index].title}}</view>
             <view class="card-desc" wx:if="{{promotions[index].description}}">{{promotions[index].description}}</view>
-            <view class="card-author">
+            <view class="card-author {{imageLandscape[index] ? 'light' : ''}}">
               <image class="author-avatar" src="{{promotions[index].avatar_url || '/images/default-avatar.png'}}" mode="aspectFill"></image>
               <text class="author-name">{{promotions[index].nickname || '匿名用户'}}</text>
             </view>
           </view>
         </view>
         <view class="promotion-card" hover-class="promotion-card-hover" hover-stay-time="100" wx:if="{{promotions[index + 1]}}" bindtap="onCardTap" data-item="{{promotions[index + 1]}}">
-          <image class="card-cover" src="{{promotions[index + 1].cover_image || '/images/default-cover.png'}}" mode="aspectFill" lazy-load="{{true}}"></image>
-          <view class="card-content">
+          <image 
+            class="card-cover" 
+            src="{{promotions[index + 1].cover_image || '/images/default-cover.png'}}" 
+            mode="widthFix" 
+            lazy-load="{{true}}"
+            bindload="onImageLoad"
+            data-index="{{index + 1}}"
+            style="height:{{imageHeights[index + 1] || 400}}rpx"
+          ></image>
+          <view class="card-overlay {{imageLandscape[index + 1] ? 'light' : ''}}">
             <view class="card-title">{{promotions[index + 1].title}}</view>
             <view class="card-desc" wx:if="{{promotions[index + 1].description}}">{{promotions[index + 1].description}}</view>
-            <view class="card-author">
+            <view class="card-author {{imageLandscape[index + 1] ? 'light' : ''}}">
               <image class="author-avatar" src="{{promotions[index + 1].avatar_url || '/images/default-avatar.png'}}" mode="aspectFill"></image>
               <text class="author-name">{{promotions[index + 1].nickname || '匿名用户'}}</text>
             </view>
