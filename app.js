@@ -35,7 +35,7 @@ App({
     userInfo: null,
     isLoggedIn: false,
     openid: null,
-    apiBaseUrl: 'https://xxxxxx.com',
+    apiBaseUrl: 'https://xxxxx.com',
     isHarmonyOS: false,
     pointsInfo: {
       balance: 0,
