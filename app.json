@@ -1,12 +1,9 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/promotion/index/index",
     "pages/profile/profile",
-    "pages/promotion/my/my",
     "pages/vip/vip",
     "pages/points-log/points-log",
-    "pages/promotion/edit/edit",
     "pages/webview/webview",
     "pages/profile/edit/edit",
     "pages/tutorial/tutorial"
@@ -30,12 +27,6 @@
         "text": "去水印",
         "iconPath": "images/tabbar-home.png",
         "selectedIconPath": "images/tabbar-home-active.png"
-      },
-      {
-        "pagePath": "pages/promotion/index/index",
-        "text": "推广",
-        "iconPath": "images/tabbar-promotion.png",
-        "selectedIconPath": "images/tabbar-promotion-active.png"
       },
       {
         "pagePath": "pages/profile/profile",

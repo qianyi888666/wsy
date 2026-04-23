@@ -169,111 +169,6 @@ const getPointsLog = (userToken, page = 1, limit = 20, filter = 'all') => {
   })
 }
 
-const uploadPromotionImage = (filePath) => {
-  return new Promise((resolve, reject) => {
-    wx.uploadFile({
-      url: `${app.globalData.apiBaseUrl}api.php?action=upload_promotion_image`,
-      filePath: filePath,
-      name: 'image',
-      success: (res) => {
-        try {
-          const data = JSON.parse(res.data)
-          if (data && data.success) {
-            resolve(data)
-          } else {
-            reject(data || { message: '上传失败' })
-          }
-        } catch (e) {
-          reject({ message: '解析响应失败' })
-        }
-      },
-      fail: (err) => {
-        reject({
-          success: false,
-          message: '上传失败',
-          error: err
-        })
-      }
-    })
-  })
-}
-
-const publishPromotion = (data) => {
-  return request('api.php', {
-    method: 'POST',
-    data: {
-      action: 'publish_promotion',
-      ...data
-    }
-  })
-}
-
-const getMyPromotions = (data) => {
-  return request('api.php', {
-    method: 'GET',
-    data: {
-      action: 'get_my_promotions',
-      user_token: data.user_token
-    }
-  })
-}
-
-const getAllPromotions = (data) => {
-  return request('api.php', {
-    method: 'GET',
-    data: {
-      action: 'get_all_promotions',
-      page: data.page || 1,
-      limit: data.limit || 20,
-      category: data.category || '',
-      keyword: data.keyword || ''
-    }
-  })
-}
-
-const updatePromotion = (data) => {
-  return request('api.php', {
-    method: 'POST',
-    data: {
-      action: 'update_promotion',
-      ...data
-    }
-  })
-}
-
-const togglePromotionStatus = (data) => {
-  return request('api.php', {
-    method: 'POST',
-    data: {
-      action: 'toggle_promotion_status',
-      id: data.id,
-      status: data.status,
-      user_token: data.user_token
-    }
-  })
-}
-
-const getPromotionDetail = (data) => {
-  return request('api.php', {
-    method: 'GET',
-    data: {
-      action: 'get_promotion_detail',
-      id: data.id
-    }
-  })
-}
-
-const deletePromotion = (data) => {
-  return request('api.php', {
-    method: 'POST',
-    data: {
-      action: 'delete_promotion',
-      id: data.id,
-      user_token: data.user_token
-    }
-  })
-}
-
 const updateUserInfo = (data) => {
   return request('api.php', {
     method: 'POST',
@@ -306,14 +201,6 @@ module.exports = {
   checkAdWatch,
   claimAdPoints,
   getPointsLog,
-  uploadPromotionImage,
-  publishPromotion,
-  getMyPromotions,
-  getAllPromotions,
-  updatePromotion,
-  togglePromotionStatus,
-  getPromotionDetail,
-  deletePromotion,
   updateUserInfo,
   getUserInfo
 }
