@@ -43,10 +43,6 @@ Component({
         });
       } else if (index === 1) {
         wx.switchTab({
-          url: '/pages/promotion/index/index'
-        });
-      } else if (index === 2) {
-        wx.switchTab({
           url: '/pages/profile/profile'
         });
       }

@@ -20,20 +20,7 @@
   >
     <image 
       class="tab-icon" 
-      src="{{currentIndex === 1 ? '/images/tabbar-promotion-active.png' : '/images/tabbar-promotion.png'}}" 
-      mode="aspectFit"
-    ></image>
-    <view class="tab-text">推广</view>
-  </view>
-  
-  <view 
-    class="tab-item {{currentIndex === 2 ? 'active' : ''}}" 
-    bindtap="onTabTap" 
-    data-index="2"
-  >
-    <image 
-      class="tab-icon" 
-      src="{{currentIndex === 2 ? '/images/tabbar-profile-active.png' : '/images/tabbar-profile.png'}}" 
+      src="{{currentIndex === 1 ? '/images/tabbar-profile-active.png' : '/images/tabbar-profile.png'}}" 
       mode="aspectFit"
     ></image>
     <view class="tab-text">个人中心</view>
