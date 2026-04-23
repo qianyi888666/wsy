@@ -69,5 +69,5 @@
   </scroll-view>
 
   <!-- 底部导航 -->
-  <custom-tabbar currentIndex="2"></custom-tabbar>
+  <custom-tabbar currentIndex="1"></custom-tabbar>
 </view>
