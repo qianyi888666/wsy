@@ -110,18 +110,10 @@
         <text class="rule-bullet">•</text>
         <text class="rule-text">解析视频（超出免费次数）扣除 1 积分/次</text>
       </view>
-      <view class="rule-item">
-        <text class="rule-bullet">•</text>
-        <text class="rule-text">发布推广扣除 3 积分</text>
-      </view>
-      <view class="rule-item">
-        <text class="rule-bullet">•</text>
-        <text class="rule-text">编辑推广扣除 1 积分</text>
-      </view>
       <view class="rule-section-title">其他说明</view>
       <view class="rule-item">
         <text class="rule-bullet">•</text>
-        <text class="rule-text">积分用于抵扣解析次数和发布推广</text>
+        <text class="rule-text">积分用于抵扣解析次数</text>
       </view>
       <view class="rule-item">
         <text class="rule-bullet">•</text>
@@ -131,5 +123,5 @@
   </view>
 
   <!-- 底部导航 -->
-  <custom-tabbar currentIndex="2"></custom-tabbar>
+  <custom-tabbar currentIndex="1"></custom-tabbar>
 </view>
