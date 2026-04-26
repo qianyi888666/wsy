@@ -1,10 +1,7 @@
-<!--pages/profile/profile.wxml-->
 <view class="page-container">
-  <!-- 顶部用户信息区 -->
   <view class="user-info-section">
     <view class="user-info-bg"></view>
     <view class="user-info-content">
-      <!-- 未登录状态 - 点击登录 -->
       <block wx:if="{{!isLoggedIn && loginStep === 'start'}}">
         <view class="login-prompt">
           <view class="avatar-wrapper">
@@ -18,15 +15,12 @@
         </view>
       </block>
 
-      <!-- 未登录状态 - 完善资料（数据库无用户） -->
       <block wx:elif="{{!isLoggedIn && loginStep === 'complete'}}">
         <view class="login-prompt">
           <view class="login-tip">请完善您的个人信息</view>
-          <!-- 头像选择 -->
           <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
             <image class="avatar" src="{{tempAvatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
           </button>
-          <!-- 昵称输入 -->
           <view class="nickname-input-wrapper">
             <input 
               class="nickname-input" 
@@ -37,12 +31,10 @@
               maxlength="20"
             />
           </view>
-          <!-- 登录按钮 -->
           <button class="login-btn" bindtap="handleLogin">保存并登录</button>
         </view>
       </block>
       
-      <!-- 已登录状态 -->
       <block wx:else>
         <view class="avatar-wrapper" bindtap="goToEdit">
           <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill"></image>
@@ -61,7 +53,6 @@
     </view>
   </view>
 
-  <!-- 功能菜单列表 -->
   <view class="menu-section">
     <view class="menu-list">
       <block wx:for="{{menuList}}" wx:key="id">
@@ -88,7 +79,6 @@
     </view>
   </view>
 
-  <!-- 关于我们弹窗 -->
   <view class="modal-mask" wx:if="{{showAboutModal}}" bindtap="closeAboutModal">
     <view class="modal-content" catchtap="stopPropagation">
       <view class="modal-header">
@@ -98,7 +88,7 @@
       <view class="modal-body">
         <view class="version-item">
           <text class="version-label">版本号</text>
-          <text class="version-value">V4.0.0</text>
+          <text class="version-value">V5.0.0</text>
         </view>
         <view class="version-desc">
           <view class="desc-line">视频或图集素材归平台<text class="highlight">作者所有</text></view>
@@ -111,7 +101,6 @@
     </view>
   </view>
 
-  <!-- 退出登录按钮 -->
   <view class="logout-section" wx:if="{{isLoggedIn}}">
     <button class="logout-btn {{loggingOut ? 'btn-pressing' : ''}}" bindtap="handleLogout">
       <text wx:if="{{!loggingOut}}">退出登录</text>
@@ -119,6 +108,5 @@
     </button>
   </view>
 
-  <!-- 底部导航栏 -->
   <custom-tabbar currentIndex="1"></custom-tabbar>
 </view>

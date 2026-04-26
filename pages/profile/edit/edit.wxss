@@ -1,4 +1,3 @@
-/* pages/profile/edit/edit.wxss */
 page {
   background-color: #F5F5F5;
 }
@@ -9,13 +8,11 @@ page {
   padding-bottom: 160rpx;
 }
 
-/* 表单内容 */
 .form-content {
   flex: 1;
   padding: 40rpx 30rpx;
 }
 
-/* 头像区域 */
 .avatar-section {
   display: flex;
   flex-direction: column;
@@ -66,7 +63,6 @@ page {
   color: #999999;
 }
 
-/* 输入区域 */
 .input-section {
   background-color: #FFFFFF;
   border-radius: 16rpx;
@@ -112,7 +108,6 @@ page {
   margin-left: 20rpx;
 }
 
-/* 底部按钮区域 */
 .btn-section {
   position: fixed;
   left: 0;
@@ -149,25 +144,20 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
 }
 
 .btn-primary:active {
-  opacity: 0.9;
-}
-
-.btn-primary.btn-loading {
   opacity: 0.8;
 }
 
-.btn-primary[disabled] {
-  background: #FFAB91;
-  color: rgba(255, 255, 255, 0.6);
+.btn-primary::after {
+  border: none;
 }
 
 .btn-secondary {
   height: 88rpx;
-  background-color: transparent;
+  background-color: #FFFFFF;
+  border: 2rpx solid #DDDDDD;
   border-radius: 44rpx;
   font-size: 32rpx;
   color: #666666;
@@ -175,13 +165,12 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2rpx solid #DDDDDD;
 }
 
 .btn-secondary:active {
   background-color: #F5F5F5;
 }
 
-.btn-secondary[disabled] {
-  opacity: 0.5;
+.btn-secondary::after {
+  border: none;
 }

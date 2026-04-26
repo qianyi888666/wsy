@@ -1,8 +1,5 @@
-<!--pages/profile/edit/edit.wxml-->
 <view class="edit-container">
-  <!-- 表单内容 -->
   <view class="form-content">
-    <!-- 头像区域 -->
     <view class="avatar-section">
       <view class="avatar-wrapper" bindtap="onChooseAvatar">
         <image 
@@ -17,7 +14,6 @@
       <view class="avatar-tip">点击更换头像</view>
     </view>
 
-    <!-- 昵称输入区域 -->
     <view class="input-section">
       <view class="input-label">昵称</view>
       <view class="input-wrapper">
@@ -38,7 +34,6 @@
     </view>
   </view>
 
-  <!-- 底部按钮区域 -->
   <view class="btn-section">
     <button 
       class="btn-secondary" 

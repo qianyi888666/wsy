@@ -35,7 +35,7 @@ Page({
     ],
     showAboutModal: false,
     versionInfo: {
-      version: '1.0.0',
+      version: '5.0.0',
       miniProgramVersion: ''
     },
     currentYear: new Date().getFullYear(),
@@ -72,7 +72,7 @@ Page({
       console.log('获取版本信息失败', e)
     }
     this.safeSetData({
-      'versionInfo.miniProgramVersion': miniProgramVersion || '1.0.0'
+      'versionInfo.miniProgramVersion': miniProgramVersion || '5.0.0'
     })
   },
 
