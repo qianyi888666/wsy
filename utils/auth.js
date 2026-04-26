@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://xxxxx.com'
+const API_BASE_URL = 'https://xxxxx.com',//填写自己的后台地址
 
 const getAppInstance = () => {
   try {
