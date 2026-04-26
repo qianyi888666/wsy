@@ -1,8 +1,3 @@
-/* 全局样式 - 渐变炫彩风格 */
-
-/* ==================== CSS变量定义 ==================== */
-
-/* 色彩系统 - 暖色系渐变炫彩 */
 page {
   --color-primary: #FF6B35;
   --color-primary-light: #FF8C42;
@@ -23,7 +18,6 @@ page {
   --color-border-strong: #FFD4B8;
 }
 
-/* 间距系统 */
 page {
   --spacing-xs: 8rpx;
   --spacing-sm: 16rpx;
@@ -33,22 +27,18 @@ page {
   --spacing-xxl: 64rpx;
 }
 
-/* 圆角系统 */
 page {
   --radius-sm: 8rpx;
   --radius-md: 12rpx;
   --radius-lg: 16rpx;
 }
 
-/* 阴影系统 - 渐变炫彩风格 */
 page {
   --shadow-sm: 0 2px 8px rgba(255, 107, 53, 0.08);
   --shadow-md: 0 4px 16px rgba(255, 107, 53, 0.12);
   --shadow-lg: 0 8px 32px rgba(255, 107, 53, 0.16);
   --shadow-glow: 0 0 20px rgba(255, 107, 53, 0.3);
 }
-
-/* ==================== 页面基础样式 ==================== */
 
 page {
   background: var(--color-bg);
@@ -60,9 +50,6 @@ page {
   overflow-y: auto;
 }
 
-/* ==================== 通用组件样式 ==================== */
-
-/* 卡片组件 */
 .card {
   background: var(--color-white);
   border-radius: var(--radius-lg);
@@ -72,7 +59,6 @@ page {
   overflow: hidden;
 }
 
-/* 主按钮 - 渐变炫彩风格 */
 .btn-primary {
   background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
   color: var(--color-white);
@@ -113,7 +99,6 @@ page {
   box-shadow: var(--shadow-sm);
 }
 
-/* 次按钮 - 渐变炫彩风格 */
 .btn-secondary {
   background: linear-gradient(180deg, #FFFFFF 0%, #FFF9E6 100%);
   color: var(--color-primary);
@@ -138,7 +123,6 @@ page {
   background: linear-gradient(180deg, #FFF5EB 0%, #FFE8CC 100%);
 }
 
-/* 成功按钮 - 渐变炫彩风格 */
 .btn-success {
   background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%);
   color: var(--color-white);
@@ -164,7 +148,6 @@ page {
   box-shadow: var(--shadow-sm);
 }
 
-/* 禁用按钮 - 渐变炫彩风格 */
 .btn-disabled {
   background: linear-gradient(180deg, #F5F5F5 0%, #E8E8E8 100%);
   color: var(--color-text-placeholder);
@@ -182,15 +165,10 @@ page {
   justify-content: center;
 }
 
-/* ==================== 容器样式 ==================== */
-
 .container {
   padding: var(--spacing-lg);
 }
 
-/* ==================== 动画定义 ==================== */
-
-/* 页面进入动画 */
 @keyframes fadeIn {
   from { 
     opacity: 0; 
@@ -222,7 +200,6 @@ page {
   }
 }
 
-/* 公告栏滚动动画 */
 @keyframes announcement-scroll {
   0% {
     transform: translateX(100%);
