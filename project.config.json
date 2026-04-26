@@ -65,7 +65,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "3.12.1",
-	"appid": "wx123456789123456789",//填写自己的微信appid
+	"appid": "wx12345678912345",//填写自己的微信Appid
 	"projectname": "%E7%9F%AD%E8%A7%86%E9%A2%91%E6%97%A0%E6%B0%B4%E5%8D%B0%E4%B8%8B%E8%BD%BD",
 	"isGameTourist": false,
 	"simulatorPluginLibVersion": {},
