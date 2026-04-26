@@ -1,4 +1,3 @@
-/* pages/vip/vip.wxss */
 page {
   height: 100%;
   overflow: visible;
@@ -10,7 +9,6 @@ page {
   padding-bottom: 200rpx;
 }
 
-/* 顶部用户信息区 */
 .user-info-section {
   position: relative;
   padding: 60rpx 30rpx 40rpx;
@@ -110,7 +108,6 @@ page {
   border: none;
 }
 
-/* 积分展示区 */
 .points-section {
   padding: 0 30rpx;
   margin-top: 20rpx;
@@ -175,7 +172,6 @@ page {
   font-size: 28rpx;
 }
 
-/* 免费解析次数区 */
 .free-section {
   padding: 30rpx;
 }
@@ -241,7 +237,6 @@ page {
   text-align: right;
 }
 
-/* 今日任务区 */
 .task-section {
   padding: 0 30rpx;
 }
@@ -333,7 +328,6 @@ page {
   color: #FFFFFF;
 }
 
-/* 积分说明区 */
 .rules-section {
   padding: 30rpx;
   padding-bottom: 100rpx;

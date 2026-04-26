@@ -1,5 +1,4 @@
 <view class="points-log-container">
-  <!-- Tab筛选 -->
   <view class="tab-section">
     <view class="tab-list">
       <view 
@@ -26,7 +25,6 @@
     </view>
   </view>
 
-  <!-- 积分记录列表 -->
   <scroll-view 
     class="log-list" 
     scroll-y 
@@ -49,7 +47,6 @@
       </view>
     </block>
     
-    <!-- 空状态 -->
     <block wx:else>
       <view class="empty-state">
         <view class="empty-icon">📭</view>
@@ -57,7 +54,6 @@
       </view>
     </block>
 
-    <!-- 加载更多 -->
     <view class="load-more" wx:if="{{logList.length > 0}}">
       <block wx:if="{{isLoading}}">
         <view class="loading-text">加载中...</view>
@@ -68,6 +64,5 @@
     </view>
   </scroll-view>
 
-  <!-- 底部导航 -->
   <custom-tabbar currentIndex="1"></custom-tabbar>
 </view>

@@ -1,4 +1,3 @@
-/* pages/points-log/points-log.wxss */
 page {
   height: 100%;
   overflow: hidden;
@@ -11,7 +10,6 @@ page {
   flex-direction: column;
 }
 
-/* Tab筛选 */
 .tab-section {
   background-color: #FFFFFF;
   padding: 20rpx 30rpx;
@@ -43,7 +41,6 @@ page {
   font-weight: 600;
 }
 
-/* 记录列表 */
 .log-list {
   flex: 1;
   padding: 20rpx 30rpx;
@@ -104,7 +101,6 @@ page {
   color: #FF4D4F;
 }
 
-/* 空状态 */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -123,7 +119,6 @@ page {
   color: #999999;
 }
 
-/* 加载更多 */
 .load-more {
   padding: 30rpx 0;
   text-align: center;

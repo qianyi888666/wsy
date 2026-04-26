@@ -1,5 +1,4 @@
 <view class="vip-container">
-  <!-- 顶部用户信息区 -->
   <view class="user-info-section">
     <view class="user-info-bg"></view>
     <view class="user-info-content">
@@ -21,7 +20,6 @@
     </view>
   </view>
 
-  <!-- 积分展示区 -->
   <view class="points-section">
     <view class="points-card">
       <view class="points-icon">💰</view>
@@ -41,7 +39,6 @@
     </view>
   </view>
 
-  <!-- 免费解析次数区 -->
   <view class="free-section">
     <view class="section-title">免费解析次数</view>
     <view class="free-card">
@@ -58,7 +55,6 @@
     </view>
   </view>
 
-  <!-- 今日任务区 -->
   <view class="task-section">
     <view class="section-title">今日任务</view>
     <view class="task-card">
@@ -88,7 +84,6 @@
     </view>
   </view>
 
-  <!-- 积分说明区 -->
   <view class="rules-section">
     <view class="section-title">积分说明</view>
     <view class="rules-card">
@@ -122,6 +117,5 @@
     </view>
   </view>
 
-  <!-- 底部导航 -->
   <custom-tabbar currentIndex="1"></custom-tabbar>
 </view>

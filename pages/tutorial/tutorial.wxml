@@ -1,4 +1,3 @@
-<!--pages/tutorial/tutorial.wxml-->
 <view class="tutorial-container">
   <view class="tutorial-header">
     <text class="header-title">小程序使用教程</text>
