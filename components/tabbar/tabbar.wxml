@@ -1,4 +1,3 @@
-<!--components/tabbar/tabbar.wxml-->
 <view class="custom-tabbar">
   <view 
     class="tab-item {{currentIndex === 0 ? 'active' : ''}}" 

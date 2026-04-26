@@ -1,4 +1,3 @@
-/* components/tabbar/tabbar.wxss */
 .custom-tabbar {
   position: fixed;
   bottom: 0;
