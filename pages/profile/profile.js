@@ -22,11 +22,7 @@ Page({
     loginStep: 'start',
     tempAvatarUrl: '',
     tempNickname: '',
-    quickEntries: [
-      { id: 'collection', name: '我的收藏', icon: '⭐', path: '', enabled: false },
-      { id: 'download', name: '我的下载', icon: '📥', path: '', enabled: false },
-      { id: 'history', name: '历史记录', icon: '📜', path: '', enabled: false }
-    ],
+    quickEntries: [],
     menuList: [
       { id: 'vip', name: '会员中心', icon: '🎫', path: '', enabled: false },
       { id: 'service', name: '联系客服', icon: '📞', path: '', enabled: true },
@@ -35,8 +31,8 @@ Page({
     ],
     showAboutModal: false,
     versionInfo: {
-      version: '5.0.0',
-      miniProgramVersion: ''
+      version: '',
+      versionIntro: ''
     },
     currentYear: new Date().getFullYear(),
     _pageAlive: true
@@ -52,7 +48,6 @@ Page({
         callback();
       }
     } catch (e) {
-      console.log('safeSetData: 页面已销毁', e);
     }
   },
 
@@ -62,17 +57,33 @@ Page({
   },
 
   getVersionInfo: function() {
-    let miniProgramVersion = ''
-    try {
-      const accountInfo = wx.getAccountInfoSync()
-      if (accountInfo && accountInfo.miniProgram) {
-        miniProgramVersion = accountInfo.miniProgram.version
+    this.fetchVersionInfo()
+  },
+
+  fetchVersionInfo: function() {
+    api.getVersionInfo().then(data => {
+      this.safeSetData({
+        'versionInfo.version': data.version_number || 'v1.0.0',
+        'versionInfo.versionIntro': data.version_intro || '首次发布'
+      })
+      
+      wx.setStorageSync('versionInfo', {
+        version_number: data.version_number,
+        version_intro: data.version_intro
+      })
+    }).catch(err => {
+      const cached = wx.getStorageSync('versionInfo')
+      if (cached) {
+        this.safeSetData({
+          'versionInfo.version': cached.version_number || 'v1.0.0',
+          'versionInfo.versionIntro': cached.version_intro || '首次发布'
+        })
+      } else {
+        this.safeSetData({
+          'versionInfo.version': 'v1.0.0',
+          'versionInfo.versionIntro': '首次发布'
+        })
       }
-    } catch (e) {
-      console.log('获取版本信息失败', e)
-    }
-    this.safeSetData({
-      'versionInfo.miniProgramVersion': miniProgramVersion || '5.0.0'
     })
   },
 
@@ -80,6 +91,8 @@ Page({
     if (!this.data._pageAlive) {
       return;
     }
+    const auth = require('../../utils/auth.js')
+    auth.checkTokenExpiry()
     this.checkLoginStatus()
   },
 
@@ -199,7 +212,6 @@ Page({
         }
       })
       .catch((err) => {
-        console.error('加载积分信息失败:', err);
       });
   },
 
@@ -207,7 +219,7 @@ Page({
     this.safeSetData({ loggingOut: true })
     wx.showLoading({ title: '登录中...' })
 
-    auth.quickLogin()
+    auth.doLogin()
       .then((result) => {
         if (!this.data._pageAlive) {
           return;
@@ -225,10 +237,10 @@ Page({
             loginStep: 'start',
             loggingOut: false,
             userInfo: {
-              avatar: result.avatarUrl,
-              nickname: result.nickName,
-              userId: result.userId,
-              userToken: result.userToken || result.userId
+              avatar: result.avatar || result.avatarUrl || '/images/default-avatar.png',
+              nickname: result.nickname || result.nickName || '用户',
+              userId: result.userId || result.id,
+              userToken: result.userToken || result.userId || result.id
             }
           }, () => {
             this.loadPointsInfo();
@@ -242,7 +254,6 @@ Page({
       .catch((err) => {
         wx.hideLoading()
         this.safeSetData({ loggingOut: false })
-        console.error('登录失败:', err)
         wx.showToast({
           title: err.message || '登录失败，请重试',
           icon: 'none'
@@ -321,7 +332,6 @@ Page({
               return;
             }
             wx.hideLoading()
-            console.error('上传头像失败:', err)
             this.safeSetData({
               isLoggedIn: true,
               loginStep: 'start',
@@ -347,7 +357,6 @@ Page({
           return;
         }
         wx.hideLoading()
-        console.error('登录失败:', err)
         wx.showToast({
           title: err.message || '登录失败，请重试',
           icon: 'none'
@@ -388,6 +397,12 @@ Page({
   goToEdit: function() {
     wx.navigateTo({
       url: '/pages/profile/edit/edit'
+    })
+  },
+
+  goToPointsLog: function() {
+    wx.navigateTo({
+      url: '/pages/points-log/points-log'
     })
   },
 

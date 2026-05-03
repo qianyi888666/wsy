@@ -37,12 +37,16 @@
 .user-info-content {
   position: relative;
   z-index: 1;
-  display: flex;
-  align-items: center;
   padding: 40rpx 30rpx;
   background-color: #FFFFFF;
   border-radius: 20rpx;
   box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.user-info-header {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
 }
 
 .avatar-wrapper {
@@ -62,6 +66,23 @@
 .user-details {
   margin-left: 30rpx;
   flex: 1;
+}
+
+.user-points {
+  font-size: 26rpx;
+  color: #FF6B35;
+  margin-top: 8rpx;
+}
+
+.points-detail-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 26rpx;
+  color: #FF6B35;
+  padding: 8rpx 16rpx;
+  background-color: #FFF5EB;
+  border-radius: 8rpx;
 }
 
 .nickname {
@@ -102,12 +123,6 @@
 .user-id {
   font-size: 26rpx;
   color: #999999;
-}
-
-.user-points {
-  font-size: 26rpx;
-  color: #FF6B35;
-  margin-top: 8rpx;
 }
 
 .login-prompt {
@@ -252,8 +267,12 @@ button.menu-item::after {
 .modal-content {
   background-color: #FFFFFF;
   width: 640rpx;
+  height: 80vh !important;
+  max-height: 70vh;
   border-radius: 16rpx;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-header {
@@ -283,6 +302,10 @@ button.menu-item::after {
 
 .modal-body {
   padding: 40rpx 40rpx 32rpx;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .version-item {
@@ -290,11 +313,6 @@ button.menu-item::after {
   justify-content: center;
   align-items: center;
   padding: 24rpx 0;
-  border-bottom: 1rpx solid #F0F0F0;
-}
-
-.version-item:last-of-type {
-  border-bottom: none;
 }
 
 .version-label {
@@ -307,6 +325,43 @@ button.menu-item::after {
   font-size: 28rpx;
   color: #FF6B35;
   font-weight: 600;
+}
+
+.version-intro-section {
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx solid #F0F0F0;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.version-intro-label {
+  display: block;
+  font-size: 28rpx;
+  color: #999999;
+  margin-bottom: 12rpx;
+  text-align: center;
+}
+
+.version-intro-content {
+  background-color: #FFF9F5;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-top: 12rpx;
+  min-height: 100rpx;
+  max-height: 650rpx;
+  overflow-y: auto;
+}
+
+.version-intro-content text {
+  display: block;
+  font-size: 26rpx;
+  color: #666666;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  text-align: left;
 }
 
 .version-desc {
@@ -337,6 +392,11 @@ button.menu-item::after {
   font-size: 22rpx;
   color: #BBBBBB;
   line-height: 1.8;
+}
+
+.version-footer {
+  flex-shrink: 0;
+  padding-top: 20rpx;
 }
 
 .logout-section {

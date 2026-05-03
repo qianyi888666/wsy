@@ -36,18 +36,21 @@
       </block>
       
       <block wx:else>
-        <view class="avatar-wrapper" bindtap="goToEdit">
-          <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill"></image>
-        </view>
-        <view class="user-details">
-          <view class="nickname-row" bindtap="goToEdit">
-            <view class="nickname">{{userInfo.nickname}}</view>
-            <view class="settings-icon">
-              <text>⚙️</text>
-            </view>
+        <view class="user-info-header">
+          <view class="avatar-wrapper" bindtap="goToEdit">
+            <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill"></image>
           </view>
-          <view class="user-id">ID：{{userInfo.userToken || userInfo.userId}}</view>
-          <view class="user-points">可用积分：{{pointsInfo.balance}}</view>
+          <view class="user-details">
+            <view class="nickname-row" bindtap="goToEdit">
+              <view class="nickname">{{userInfo.nickname}}</view>
+              <view class="settings-icon">
+                <text>⚙️</text>
+              </view>
+            </view>
+            <view class="user-id">ID：{{userInfo.userToken || userInfo.userId}}</view>
+            <view class="user-points">可用积分：{{pointsInfo.balance}}</view>
+          </view>
+          <view class="points-detail-btn" bindtap="goToPointsLog">积分明细</view>
         </view>
       </block>
     </view>
@@ -88,14 +91,22 @@
       <view class="modal-body">
         <view class="version-item">
           <text class="version-label">版本号</text>
-          <text class="version-value">V5.0.0</text>
+          <text class="version-value">{{versionInfo.version}}</text>
         </view>
-        <view class="version-desc">
-          <view class="desc-line">视频或图集素材归平台<text class="highlight">作者所有</text></view>
-          <view class="desc-line">本小程序不储存任何视频及图片</view>
+        <view class="version-intro-section" wx:if="{{versionInfo.versionIntro}}" style="flex: 1; overflow: hidden;">
+          <text class="version-intro-label">版本介绍</text>
+          <view class="version-intro-content">
+            <text>{{versionInfo.versionIntro}}</text>
+          </view>
         </view>
-        <view class="copyright">
-          <text>© {{currentYear}} 芊艺科技</text>
+        <view class="version-footer">
+          <view class="version-desc">
+            <view class="desc-line">视频或图集素材归平台<text class="highlight">作者所有</text></view>
+            <view class="desc-line">本小程序不储存任何视频及图片</view>
+          </view>
+          <view class="copyright">
+            <text>© {{currentYear}} 芊艺科技</text>
+          </view>
         </view>
       </view>
     </view>

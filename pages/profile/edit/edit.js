@@ -28,7 +28,6 @@ Page({
     try {
       this.setData(data, callback)
     } catch (e) {
-      console.log('safeSetData: 页面已销毁', e)
     }
   },
 
@@ -71,14 +70,38 @@ Page({
       mediaType: ['image'],
       sourceType: ['album', 'camera'],
       success: function(res) {
-        const tempFilePath = res.tempFiles[0].tempFilePath
-        that.safeSetData({
-          avatarUrl: tempFilePath,
-          hasChanges: true
-        })
+        const originalPath = res.tempFiles[0].tempFilePath
+        const fileSize = res.tempFiles[0].size
+
+        if (fileSize > 200 * 1024) {
+          wx.compressImage({
+            src: originalPath,
+            quality: 80,
+            success: function(compressRes) {
+              that.safeSetData({
+                avatarUrl: compressRes.tempFilePath,
+                hasChanges: true
+              })
+            },
+            fail: function() {
+              that.safeSetData({
+                avatarUrl: originalPath,
+                hasChanges: true
+              })
+              wx.showToast({
+                title: '图片压缩失败，使用原图',
+                icon: 'none'
+              })
+            }
+          })
+        } else {
+          that.safeSetData({
+            avatarUrl: originalPath,
+            hasChanges: true
+          })
+        }
       },
       fail: function(err) {
-        console.error('选择头像失败:', err)
         if (err.errMsg && err.errMsg.includes('cancel')) {
           return
         }
@@ -203,8 +226,9 @@ Page({
     }
 
     const currentAvatarUrl = this.data.avatarUrl
+    const isTempFile = currentAvatarUrl && (currentAvatarUrl.startsWith('http://tmp') || currentAvatarUrl.startsWith('wxfile://') || currentAvatarUrl.startsWith('/tmp'))
 
-    if (currentAvatarUrl && currentAvatarUrl !== this.data.originalAvatarUrl && currentAvatarUrl.startsWith('http')) {
+    if (currentAvatarUrl && currentAvatarUrl !== this.data.originalAvatarUrl && !isTempFile) {
       uploadAndUpdate(currentAvatarUrl)
     } else if (currentAvatarUrl && currentAvatarUrl !== this.data.originalAvatarUrl) {
       if (!openid) {
