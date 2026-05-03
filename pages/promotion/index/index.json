@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "custom-tabbar": "/components/tabbar/tabbar"
-  },
-  "navigationBarTitleText": "推广中心",
-  "enablePullDownRefresh": true,
-  "backgroundTextStyle": "dark"
-}
