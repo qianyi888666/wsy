@@ -13,24 +13,61 @@ Page({
     noticeContent: '欢迎使用短视频无水印下载小程序！！！',
     announcementContent: '欢迎使用短视频无水印下载，本工具提供短视频无水印下载功能！',
     announcementBarTop: 0,
-    updateTimer: null
+    updateTimer: null,
+    _pageAlive: true,
+    _initialized: false
   },
 
   onLoad: function (options) {
+    this.data._pageAlive = true
+    this.data._initialized = false
+
     setTimeout(() => {
       const app = getApp()
       this.setData({
         isHarmonyOS: app.globalData.isHarmonyOS
       })
-      
+
       this.getNoticeContent()
       this.getAnnouncementContent()
-      
+
       this.data.updateTimer = setInterval(() => {
-        this.getNoticeContent()
-        this.getAnnouncementContent()
+        if (this.data._pageAlive) {
+          this.getNoticeContent()
+          this.getAnnouncementContent()
+        }
       }, 5000)
+      this.data._initialized = true
     }, 100)
+  },
+
+  onShow: function() {
+    const auth = require('../../utils/auth.js')
+    auth.checkTokenExpiry()
+
+    if (!this.data.updateTimer && this.data._pageAlive && this.data._initialized) {
+      this.data.updateTimer = setInterval(() => {
+        if (this.data._pageAlive) {
+          this.getNoticeContent()
+          this.getAnnouncementContent()
+        }
+      }, 5000)
+    }
+  },
+
+  onHide: function() {
+    if (this.data.updateTimer) {
+      clearInterval(this.data.updateTimer)
+      this.data.updateTimer = null
+    }
+  },
+
+  onUnload: function() {
+    if (this.data.updateTimer) {
+      clearInterval(this.data.updateTimer)
+      this.data.updateTimer = null
+    }
+    this.data._pageAlive = false
   },
 
   onUrlInput: function(e) {
@@ -121,7 +158,6 @@ Page({
     const app = getApp()
     const auth = require('../../utils/auth.js')
     const userInfo = auth.getStoredUserInfo()
-    
     const userToken = userInfo ? (userInfo.userToken || '') : ''
     const userId = userInfo ? userInfo.userId : 0
 
@@ -164,20 +200,33 @@ Page({
         })
       })
       .catch(err => {
-        console.log('解析错误:', err)
-        
         let errorMessage = '解析失败，请检查链接是否正确或稍后重试'
-        
+
         if (err) {
-          console.log('err.code:', err.code)
-          console.log('err.message:', err.message)
-          console.log('err.error:', err.error)
-          
           if (err.code === 401) {
+            this.setData({ loading: false })
             wx.showModal({
               title: '提示',
               content: err.message || '请先登录后再使用解析功能',
               confirmText: '去登录',
+              success: (res) => {
+                if (res.confirm) {
+                  wx.switchTab({
+                    url: '/pages/profile/profile'
+                  })
+                }
+              }
+            })
+            return
+          }
+          else if (err.code === 402) {
+            this.setData({ loading: false })
+            const auth = require('../../utils/auth.js')
+            auth.logout()
+            wx.showModal({
+              title: '登录已失效',
+              content: err.message || '登录已过期，请重新登录',
+              confirmText: '重新登录',
               success: (res) => {
                 if (res.confirm) {
                   wx.switchTab({
@@ -218,6 +267,7 @@ Page({
             errorMessage = '当前免费次数已用完，请明天再来或者升级VIP'
           }
           else if (err.message && err.message.includes('请先登录')) {
+            this.setData({ loading: false })
             wx.showModal({
               title: '提示',
               content: err.message,
@@ -255,6 +305,11 @@ Page({
         this.setData({
           loading: false,
           error: errorMessage
+        })
+
+        wx.pageScrollTo({
+          scrollTop: 500,
+          duration: 300
         })
       })
   },
@@ -391,7 +446,6 @@ Page({
           })
         } else {
           if (retryCount < maxRetries) {
-            console.log(`下载失败，状态码：${res.statusCode}，正在重试...`)
             setTimeout(() => {
               this.downloadWithRetry(downloadUrl, retryCount + 1)
             }, 1000)
@@ -420,11 +474,8 @@ Page({
       },
       fail: (err) => {
         wx.hideLoading()
-        
-        console.log('下载失败，错误信息：', err)
-        
+
         if (retryCount < maxRetries) {
-          console.log(`下载失败，正在重试...`)
           setTimeout(() => {
             this.downloadWithRetry(downloadUrl, retryCount + 1)
           }, 1000)
@@ -497,7 +548,6 @@ Page({
         try {
           this.videoContext = wx.createVideoContext('previewVideo', this)
         } catch (e) {
-          console.error('创建视频上下文失败:', e)
           this.setData({
             showVideoPreview: false
           })
@@ -513,7 +563,6 @@ Page({
           try {
             this.videoContext.play()
           } catch (e) {
-            console.error('播放视频失败:', e)
             this.setData({
               showVideoPreview: false
             })
@@ -529,7 +578,6 @@ Page({
         try {
           this.videoContext.pause()
         } catch (e) {
-          console.error('暂停视频失败:', e)
         }
       }
     }
@@ -540,7 +588,6 @@ Page({
       try {
         this.videoContext = wx.createVideoContext('previewVideo', this)
       } catch (e) {
-        console.error('创建视频上下文失败:', e)
         wx.showToast({
           title: '视频刷新功能不可用',
           icon: 'none'
@@ -552,15 +599,13 @@ Page({
     try {
       this.videoContext.pause()
     } catch (e) {
-      console.error('暂停视频失败:', e)
     }
-    
+
     setTimeout(() => {
       if (this.videoContext) {
         try {
           this.videoContext.play()
         } catch (e) {
-          console.error('播放视频失败:', e)
           wx.showToast({
             title: '视频播放失败',
             icon: 'none'
@@ -571,11 +616,9 @@ Page({
   },
 
   onVideoPlay: function() {
-    console.log('视频开始播放')
   },
 
   onVideoPause: function() {
-    console.log('视频暂停')
   },
 
   onVideoEnded: function() {
@@ -610,7 +653,6 @@ Page({
     })
     
     if (e.detail && e.detail.errMsg && e.detail.errMsg.includes('Failed to load')) {
-      console.log('视频链接已失效，需要重新解析')
     }
   },
 
@@ -622,39 +664,17 @@ Page({
       })
       return
     }
-    
+
     wx.openDocument({
       filePath: this.data.videoData.url,
       success: (res) => {
-        console.log('打开视频成功')
       },
       fail: (err) => {
-        console.error('打开视频失败:', err)
         wx.showToast({
           title: '无法打开视频',
           icon: 'none'
         })
       }
-    })
-  },
-
-  onUnload: function() {
-    if (this.data.updateTimer) {
-      clearInterval(this.data.updateTimer)
-    }
-    
-    if (this.videoContext) {
-      this.videoContext = null
-    }
-  },
-  
-  onHide: function() {
-  },
-  
-  onShow: function() {
-    wx.setNavigationBarColor({
-      frontColor: '#ffffff',
-      backgroundColor: '#FF6B35'
     })
   },
 
@@ -716,7 +736,13 @@ Page({
     });
   },
 
-  showCustomerServiceTip: function() {
-    console.log('客服按钮被点击');
+  onCustomerServiceTap: function() {
+  },
+
+  stopUpdateTimer: function() {
+    if (this.data.updateTimer) {
+      clearInterval(this.data.updateTimer)
+      this.data.updateTimer = null
+    }
   }
 })

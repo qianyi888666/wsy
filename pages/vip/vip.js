@@ -85,12 +85,9 @@ Page({
 
   loadPointsInfo: function() {
     const userInfo = wx.getStorageSync('userInfo');
-    console.log('=== loadPointsInfo ===');
-    console.log('userInfo:', userInfo);
-    
+
     const token = userInfo.userToken || userInfo.userId;
     if (!userInfo || !token) {
-      console.log('没有userToken，无法获取积分');
       return;
     }
 
@@ -99,7 +96,6 @@ Page({
     api.getPointsInfo(token)
       .then((res) => {
         wx.hideLoading();
-        console.log('积分接口返回:', res);
         if (res.success) {
           const data = res.data;
           const freeProgress = data.defaultParseLimit > 0 
@@ -132,7 +128,6 @@ Page({
           return;
         }
         wx.hideLoading();
-        console.error('加载积分信息失败:', err);
         this.setDefaultPointsInfo();
       });
   },
@@ -168,11 +163,9 @@ Page({
       });
 
       rewardedVideoAd.onLoad(() => {
-        console.log('激励视频广告加载成功');
       });
 
       rewardedVideoAd.onError((err) => {
-        console.error('激励视频广告加载失败:', err);
         wx.showToast({
           title: '广告加载失败，请稍后重试',
           icon: 'none'
@@ -207,7 +200,6 @@ Page({
     try {
       ad.destroy();
     } catch (e) {
-      console.log('销毁广告组件失败:', e);
     }
     this.data.rewardedVideoAd = null;
   },
@@ -259,7 +251,6 @@ Page({
       if (!this.data._pageAlive) {
         return;
       }
-      console.error('显示激励视频广告失败:', err);
       wx.showToast({
         title: '广告加载失败',
         icon: 'none'
@@ -310,7 +301,6 @@ Page({
           return;
         }
         this.safeSetData({ isLoading: false });
-        console.error('领取积分失败:', err);
         wx.showToast({
           title: '网络错误',
           icon: 'none'
