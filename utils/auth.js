@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://xxxxx.com',//填写自己的后台地址
+const API_BASE_URL = 'https://xxxxxx.com/'
 
 const getAppInstance = () => {
   try {
@@ -10,11 +10,9 @@ const getAppInstance = () => {
 
 const getUserProfile = () => {
   return new Promise((resolve, reject) => {
-    console.log('开始获取用户信息，弹出授权窗口...')
     wx.getUserProfile({
       desc: '用于完善用户资料',
       success: (res) => {
-        console.log('获取用户信息成功:', res.userInfo)
         if (res.userInfo) {
           resolve(res.userInfo)
         } else {
@@ -22,7 +20,6 @@ const getUserProfile = () => {
         }
       },
       fail: (err) => {
-        console.error('获取用户信息失败:', err)
         const errorMsg = err.errMsg || ''
         if (errorMsg.includes('auth deny') || errorMsg.includes('auth denied')) {
           reject(new Error('您已拒绝授权，无法获取昵称和头像'))
@@ -136,39 +133,55 @@ const uploadAvatar = (avatarPath, openid) => {
   })
 }
 
-const doLogin = async () => {
-  try {
-    console.log('=== 开始登录流程 ===')
-    
-    console.log('步骤1: 获取用户信息（昵称、头像）...')
-    const userInfo = await getUserProfile()
-    console.log('用户信息:', userInfo)
-    
-    console.log('步骤2: 获取登录code...')
-    const code = await login()
-    console.log('code:', code)
-    
-    console.log('步骤3: 发送到后端登录...')
-    const result = await wechatLogin(code, userInfo.nickName, userInfo.avatarUrl)
-    console.log('后端返回:', result)
-    
-    const loginData = {
-      ...userInfo,
-      openid: result.data.openid,
-      userId: result.data.id,
-      userToken: result.data.user_token
-    }
-    
-    wx.setStorageSync('userInfo', loginData)
-    wx.setStorageSync('isLoggedIn', true)
-    wx.setStorageSync('openid', result.data.openid)
-    
-    console.log('=== 登录完成 ===')
-    return loginData
-  } catch (err) {
-    console.error('登录失败:', err)
-    throw err
+const doLogin = () => {
+  return new Promise((resolve, reject) => {
+    let userInfo = null
+
+    getUserProfile()
+      .then((info) => {
+        userInfo = info
+
+        return login()
+      })
+      .then((code) => {
+
+        return wechatLogin(code, userInfo.nickName, userInfo.avatarUrl)
+      })
+      .then((result) => {
+
+        const loginData = {
+          openid: result.data.openid,
+          userId: result.data.id,
+          userToken: result.data.user_token,
+          nickname: result.data.nickname || result.data.nickName || '微信用户',
+          avatar: result.data.avatar_url || result.data.avatarUrl || '/images/default-avatar.png',
+          loginTime: Date.now()
+        }
+
+        wx.setStorageSync('userInfo', loginData)
+        wx.setStorageSync('isLoggedIn', true)
+        wx.setStorageSync('openid', result.data.openid)
+
+        resolve(loginData)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+  })
+}
+
+const checkTokenExpiry = () => {
+  const userInfo = wx.getStorageSync('userInfo')
+  if (!userInfo || !userInfo.loginTime) {
+    return false
   }
+  const TOKEN_EXPIRE_MS = 10 * 60 * 1000
+  const now = Date.now()
+  if (now - userInfo.loginTime > TOKEN_EXPIRE_MS) {
+    logout()
+    return true
+  }
+  return false
 }
 
 const logout = () => {
@@ -176,12 +189,17 @@ const logout = () => {
   wx.removeStorageSync('userInfo')
   wx.removeStorageSync('openid')
   wx.removeStorageSync('localUserInfo')
-  
+
   const app = getAppInstance()
   if (app.globalData) {
     app.globalData.userInfo = null
     app.globalData.isLoggedIn = false
   }
+}
+
+const getUserToken = () => {
+  const userInfo = wx.getStorageSync('userInfo')
+  return userInfo ? (userInfo.userToken || userInfo.userId || null) : null
 }
 
 const checkLoginStatus = () => {
@@ -207,38 +225,32 @@ const getStoredOpenid = () => {
   return wx.getStorageSync('openid') || null
 }
 
-const doLoginWithManual = async (avatarUrl, nickname) => {
-  try {
-    console.log('=== 开始手动登录流程 ===')
-    console.log('头像:', avatarUrl)
-    console.log('昵称:', nickname)
+const doLoginWithManual = (avatarUrl, nickname) => {
+  return new Promise((resolve, reject) => {
+    login()
+      .then((code) => {
+        return wechatLogin(code, nickname, avatarUrl)
+      })
+      .then((result) => {
+        const loginData = {
+          avatarUrl: avatarUrl,
+          nickName: nickname,
+          openid: result.data.openid,
+          userId: result.data.id,
+          userToken: result.data.user_token,
+          loginTime: Date.now()
+        }
 
-    console.log('步骤1: 获取登录code...')
-    const code = await login()
-    console.log('code:', code)
+        wx.setStorageSync('userInfo', loginData)
+        wx.setStorageSync('isLoggedIn', true)
+        wx.setStorageSync('openid', result.data.openid)
 
-    console.log('步骤2: 发送到后端登录...')
-    const result = await wechatLogin(code, nickname, avatarUrl)
-    console.log('后端返回:', result)
-
-    const loginData = {
-      avatarUrl: avatarUrl,
-      nickName: nickname,
-      openid: result.data.openid,
-      userId: result.data.id,
-      userToken: result.data.user_token
-    }
-
-    wx.setStorageSync('userInfo', loginData)
-    wx.setStorageSync('isLoggedIn', true)
-    wx.setStorageSync('openid', result.data.openid)
-
-    console.log('=== 登录完成 ===')
-    return { userId: result.data.id, userToken: result.data.user_token, openid: result.data.openid }
-  } catch (err) {
-    console.error('登录失败:', err)
-    throw err
-  }
+        resolve({ userId: result.data.id, userToken: result.data.user_token, openid: result.data.openid })
+      })
+      .catch((err) => {
+        reject(err)
+      })
+})
 }
 
 module.exports = {
@@ -250,7 +262,9 @@ module.exports = {
   doLogin,
   logout,
   checkLoginStatus,
+  getUserToken,
   getStoredUserInfo,
   getStoredOpenid,
-  doLoginWithManual
+  doLoginWithManual,
+  checkTokenExpiry
 }

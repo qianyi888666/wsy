@@ -35,8 +35,8 @@ App({
     userInfo: null,
     isLoggedIn: false,
     openid: null,
-    apiBaseUrl: 'https://xxxxx.com',//填写自己的后台地址
-    isHarmonyOS: false,
+    apiBaseUrl: 'https://xxxxxx.com/',
+       isHarmonyOS: false,
     pointsInfo: {
       balance: 0,
       defaultParseLimit: 3,

@@ -1,95 +1,94 @@
 {
-	"description": "项目配置文件",
-	"packOptions": {
-		"ignore": [
-			{
-				"type": "folder",
-				"value": "__MACOSX"
-			},
-			{
-				"type": "folder",
-				"value": "1"
-			}
-		],
-		"include": []
-	},
-	"setting": {
-		"bundle": false,
-		"userConfirmedBundleSwitch": false,
-		"urlCheck": true,
-		"es6": true,
-		"enhance": true,
-		"postcss": true,
-		"preloadBackgroundData": false,
-		"minified": true,
-		"newFeature": false,
-		"coverView": true,
-		"nodeModules": false,
-		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"uglifyFileName": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"compileHotReLoad": false,
-		"useMultiFrameRuntime": true,
-		"useApiHook": true,
-		"useApiHostProcess": true,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		},
-		"enableEngineNative": false,
-		"useIsolateContext": true,
-		"useCompilerModule": true,
-		"userConfirmedUseCompilerModuleSwitch": false,
-		"userConfirmedUseCompilerModuleSwitch2": false,
-		"packNpmManually": false,
-		"packNpmRelationList": [],
-		"minifyWXSS": true,
-		"compileWorklet": false,
-		"minifyWXML": true,
-		"localPlugins": false,
-		"disableUseStrict": false,
-		"useCompilerPlugins": false,
-		"condition": false,
-		"swc": false,
-		"disableSWC": true,
-		"remoteDebugLogEnable": false,
-		"prefetch": false
-	},
-	"privacyChannel": {
-		"desc": "用于选择封面图片"
-	},
-	"compileType": "miniprogram",
-	"libVersion": "3.12.1",
-	"appid": "wx12345678912345",//填写自己的微信Appid
-	"projectname": "%E7%9F%AD%E8%A7%86%E9%A2%91%E6%97%A0%E6%B0%B4%E5%8D%B0%E4%B8%8B%E8%BD%BD",
-	"isGameTourist": false,
-	"simulatorPluginLibVersion": {},
-	"editorSetting": {},
-	"qqappid": "1108100302",
-	"scripts": {},
-	"condition": {
-		"search": {
-			"list": []
-		},
-		"conversation": {
-			"list": []
-		},
-		"game": {
-			"list": []
-		},
-		"plugin": {
-			"list": []
-		},
-		"gamePlugin": {
-			"list": []
-		},
-		"miniprogram": {
-			"list": []
-		}
-	}
+  "description": "项目配置文件",
+  "packOptions": {
+    "ignore": [
+      {
+        "value": "__MACOSX",
+        "type": "folder"
+      },
+      {
+        "value": "1",
+        "type": "folder"
+      }
+    ],
+    "include": []
+  },
+  "setting": {
+    "bundle": false,
+    "userConfirmedBundleSwitch": false,
+    "urlCheck": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": false,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "enableEngineNative": false,
+    "useIsolateContext": true,
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "userConfirmedUseCompilerModuleSwitch2": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "compileWorklet": false,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "remoteDebugLogEnable": false,
+    "prefetch": false
+  },
+  "privacyChannel": {
+    "desc": "用于选择封面图片"
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.12.1",
+  "appid": "wxc272eca235cd46e6",
+  "projectname": "%E7%9F%AD%E8%A7%86%E9%A2%91%E6%97%A0%E6%B0%B4%E5%8D%B0%E4%B8%8B%E8%BD%BD",
+  "isGameTourist": false,
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {},
+  "qqappid": "1108100302",
+  "condition": {
+    "search": {
+      "list": []
+    },
+    "conversation": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "plugin": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": []
+    }
+  }
 }
